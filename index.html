@@ -10,9 +10,12 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: 'Poppins', sans-serif;
-      scroll-behavior: smooth;
       background-color: #F4EDE4;
       color: #3C2A1E;
     }
@@ -81,6 +84,25 @@
   </style>
 </head>
 <body class="text-[#3C2A1E]">
+  <!-- Navigation Bar -->
+  <nav class="fixed top-0 left-0 w-full z-50 bg-[#3C2A1E]/90 backdrop-blur-md shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        <!-- Logo -->
+        <div class="text-[#D4AF37] font-bold text-2xl">
+          Cadenza
+        </div>
+        <!-- Nav Links -->
+        <div class="hidden md:flex gap-8 text-[#F4EDE4] font-medium">
+          <a href="#about" class="nav-link hover:text-[#D4AF37] transition">About</a>
+          <a href="#services" class="nav-link hover:text-[#D4AF37] transition">Courses</a>
+          <a href="#testimonials" class="nav-link hover:text-[#D4AF37] transition">Instructors</a>
+          <a href="#contact" class="nav-link hover:text-[#D4AF37] transition">Contact</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
   <section class="relative pt-40 pb-40">
     <div class="absolute inset-0 bg-cover bg-center z-0" style="background-image: url('backgroundaiimg.jpg');"></div>
 
