@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadenza - Indian Vocal Music Academy</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.39/build/spline-viewer.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      scroll-behavior: smooth;
+      background-color: #F4EDE4;
+      color: #3C2A1E;
+    }
+
+    .hero-gradient {
+      background: linear-gradient(135deg, #754032 0%, #4A2C21 100%);
+    }
+
+    .bg-fixed-hero {
+      background-image: url('backgroundaiimg.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .service-card {
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 25px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .testimonial-card {
+      transition: all 0.3s ease;
+    }
+
+    .testimonial-card:hover {
+      transform: scale(1.03);
+    }
+
+    .nav-link {
+      position: relative;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #D4AF37;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    spline-viewer {
+      width: 100%;
+      height: 450px;
+      pointer-events: auto !important;
+    }
+
+    @media (max-width: 768px) {
+      spline-viewer {
+        height: 220px;
+        transform: scale(0.6);
+        transform-origin: center;
+      }
+    }
+  </style>
+</head>
+<body class="text-[#3C2A1E]">
+  <section class="relative pt-40 pb-40">
+    <div class="absolute inset-0 bg-cover bg-center z-0" style="background-image: url('backgroundaiimg.jpg');"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col lg:flex-row justify-center items-end gap-8">
+
+        <!-- Only Box on Mobile -->
+        <div class="bg-[#754032]/80 backdrop-blur-md rounded-xl p-8 shadow-lg text-center text-[#F4EDE4] w-full max-w-md block lg:hidden mt-[60%]">
+          <h1 class="text-4xl md:text-5xl font-extrabold">
+            Sing with<br>
+            <span class="text-[#D4AF37]">Passion</span>
+          </h1>
+          <p class="mt-4 text-lg">Feel the rhythm, own the stage, and shine bright in your musical journey with us.</p>
+          <a href="#contact" class="mt-6 inline-block bg-[#D4AF37] text-black px-6 py-3 font-semibold rounded-md hover:bg-yellow-400 transition">Enroll Now</a>
+        </div>
+
+        <!-- Two Boxes on Desktop -->
+        <div class="hidden lg:flex lg:flex-row justify-between items-start gap-8 w-full">
+          <!-- Left Box -->
+          <div class="bg-[#754032]/80 backdrop-blur-md rounded-xl p-8 shadow-lg text-center text-[#F4EDE4] w-full lg:w-[25%]">
+            <h1 class="text-4xl md:text-5xl font-extrabold">
+              Discover Your<br>
+              <span class="text-[#D4AF37]">Musical Potential</span>
+            </h1>
+            <p class="mt-4 text-lg">Cadenza is dedicated to nurturing musical talent through expert guidance in Indian classical and contemporary music forms.</p>
+            <a href="#contact" class="mt-6 inline-block bg-[#D4AF37] text-black px-6 py-3 font-semibold rounded-md hover:bg-yellow-400 transition">Enroll Now</a>
+          </div>
+
+          <!-- Right Box -->
+          <div class="bg-[#754032]/80 backdrop-blur-md rounded-xl p-8 shadow-lg text-center text-[#F4EDE4] w-full lg:w-[25%]">
+            <h1 class="text-4xl md:text-5xl font-extrabold">
+              Sing with<br>
+              <span class="text-[#D4AF37]">Passion</span>
+            </h1>
+            <p class="mt-4 text-lg">Feel the rhythm, own the stage, and shine bright in your musical journey with us.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-20 bg-white text-[#3C2A1E]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h3 class="text-sm font-semibold text-purple-600 uppercase">About Us</h3>
+      <h2 class="text-4xl font-extrabold mt-2">Our Dedication to Talent Development</h2>
+      <p class="mt-4 text-xl max-w-3xl mx-auto text-gray-600">At Cadenza, we believe everyone has musical potential waiting to be discovered.</p>
+
+      <div class="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-2 text-left">
+        <div class="flex gap-4">
+          <div class="bg-[#D4AF37] text-white p-4 rounded-lg">
+            <i class="fas fa-music fa-lg"></i>
+          </div>
+          <div>
+            <h4 class="text-lg font-semibold">Expert Instructors</h4>
+            <p class="text-black">Our team consists of professionally certified and friendly teachers who are passionate about sharing their knowledge.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4">
+          <div class="bg-[#D4AF37] text-white p-4 rounded-lg">
+            <i class="fas fa-user-graduate fa-lg"></i>
+          </div>
+          <div>
+            <h4 class="text-lg font-semibold">Personalized Approach</h4>
+            <p class="text-black">We tailor our teaching methods to suit each student's learning style and musical goals.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4">
+          <div class="bg-[#D4AF37] text-white p-4 rounded-lg">
+            <i class="fas fa-trophy fa-lg"></i>
+          </div>
+          <div>
+            <h4 class="text-lg font-semibold">Strong Foundations</h4>
+            <p class="text-black">We emphasize building solid fundamentals that will serve students throughout their musical journey.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4">
+          <div class="bg-[#D4AF37] text-white p-4 rounded-lg">
+            <i class="fas fa-heart fa-lg"></i>
+          </div>
+          <div>
+            <h4 class="text-lg font-semibold">Cultural Preservation</h4>
+            <p class="text-black">We're committed to preserving and promoting India's rich musical heritage while embracing contemporary forms.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spline Embed -->
+         <div class="mt-16">
+        <spline-viewer url="https://prod.spline.design/mWhJ2KL4kSoFz1GR/scene.splinecode"></spline-viewer>
+      </div>
+
+
+     
+    </div>
+  </section>
+
+  <!-- Services Section -->
+<section id="services" class="py-16 bg-[#754032]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-[#F4EDE4]">
+    <h2 class="text-3xl font-bold">Our Services</h2>
+    <p class="mt-4 text-lg max-w-2xl mx-auto">Comprehensive music training rooted in Indian classical excellence.</p>
+    <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      
+      <!-- Guitar -->
+      <div class="service-card bg-[#F4EDE4] text-[#3C2A1E] p-6 rounded-xl">
+        <div class="h-48 bg-indigo-100 flex items-center justify-center rounded-t-xl">
+          <i class="fas fa-guitar text-6xl text-indigo-600"></i>
+        </div>
+        <div class="pt-6">
+          <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Guitar</div>
+          <h3 class="mt-2 text-xl font-semibold">Acoustic & Electric Guitar</h3>
+          <p class="mt-3 text-gray-600">Begin with the fundamentals like scales and chords. Play your favorite songs or become the next rockstar with guidance at each level.</p>
+        </div>
+      </div>
+
+      <!-- Tabla -->
+      <div class="service-card bg-[#F4EDE4] text-[#3C2A1E] p-6 rounded-xl">
+        <div class="h-48 bg-amber-100 flex items-center justify-center rounded-t-xl">
+          <i class="fas fa-drum text-6xl text-amber-600"></i>
+        </div>
+        <div class="pt-6">
+          <div class="uppercase tracking-wide text-sm text-amber-500 font-semibold">Percussion</div>
+          <h3 class="mt-2 text-xl font-semibold">Tabla</h3>
+          <p class="mt-3 text-gray-600">The heartbeat of Indian classical music. Learn to appreciate the versatility of Indian heritage while developing a strong tala foundation.</p>
+        </div>
+      </div>
+
+      <!-- Hindustani Vocals -->
+      <div class="service-card bg-[#F4EDE4] text-[#3C2A1E] p-6 rounded-xl">
+        <div class="h-48 bg-emerald-100 flex items-center justify-center rounded-t-xl">
+          <i class="fas fa-microphone text-6xl text-emerald-600"></i>
+        </div>
+        <div class="pt-6">
+          <div class="uppercase tracking-wide text-sm text-emerald-500 font-semibold">Vocals</div>
+          <h3 class="mt-2 text-xl font-semibold">Hindustani Vocals</h3>
+          <p class="mt-3 text-gray-600">Learn voice culture, different ragas and talas while understanding the versatility of Indian culture in this performance-based course.</p>
+        </div>
+      </div>
+
+      <!-- Bollywood Vocals -->
+      <div class="service-card bg-[#F4EDE4] text-[#3C2A1E] p-6 rounded-xl">
+        <div class="h-48 bg-rose-100 flex items-center justify-center rounded-t-xl">
+          <i class="fas fa-film text-6xl text-rose-600"></i>
+        </div>
+        <div class="pt-6">
+          <div class="uppercase tracking-wide text-sm text-rose-500 font-semibold">Vocals</div>
+          <h3 class="mt-2 text-xl font-semibold">Bollywood Vocals</h3>
+          <p class="mt-3 text-gray-600">Sing as a hobby or learn your favorite songs. We help with vocal training and foundational skills for film music.</p>
+        </div>
+      </div>
+
+      <!-- Kathak -->
+      <div class="service-card bg-[#F4EDE4] text-[#3C2A1E] p-6 rounded-xl">
+        <div class="h-48 bg-purple-100 flex items-center justify-center rounded-t-xl">
+          <i class="fas fa-child text-6xl text-purple-600"></i>
+        </div>
+        <div class="pt-6">
+          <div class="uppercase tracking-wide text-sm text-purple-500 font-semibold">Dance</div>
+          <h3 class="mt-2 text-xl font-semibold">Kathak</h3>
+          <p class="mt-3 text-gray-600">Learn one of India's most revered classical dance forms, building from simple footwork to expressive dance movements.</p>
+        </div>
+      </div>
+
+      <!-- Music Production -->
+      <div class="service-card bg-[#F4EDE4] text-[#3C2A1E] p-6 rounded-xl">
+        <div class="h-48 bg-blue-100 flex items-center justify-center rounded-t-xl">
+          <i class="fas fa-compact-disc text-6xl text-blue-600"></i>
+        </div>
+        <div class="pt-6">
+          <div class="uppercase tracking-wide text-sm text-blue-500 font-semibold">Production</div>
+          <h3 class="mt-2 text-xl font-semibold">Music Production</h3>
+          <p class="mt-3 text-gray-600">Make your own music or tracks with guidance at each level. Learn beat making, music production, and mixing/mastering from scratch.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="py-16 bg-[#F4EDE4]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold">What Our Students Say</h2>
+      <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="testimonial-card p-6 bg-white rounded-lg shadow">
+          <p class="text-lg">"Cadenza gave me confidence in my voice and stage presence!"</p>
+          <p class="mt-4 font-semibold">Rahul Sharma</p>
+        </div>
+        <div class="testimonial-card p-6 bg-white rounded-lg shadow">
+          <p class="text-lg">"The blend of tradition and innovation here is perfect."</p>
+          <p class="mt-4 font-semibold">Priya Patel</p>
+        </div>
+        <div class="testimonial-card p-6 bg-white rounded-lg shadow">
+          <p class="text-lg">"Amazing teachers and a great riyaaz routine!"</p>
+          <p class="mt-4 font-semibold">Arjun Mehta</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-16 hero-gradient text-[#F4EDE4]">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold">Start Your Musical Journey</h2>
+      <p class="mt-4 text-lg">Fill the form and we’ll reach out to you!</p>
+      <form class="mt-8 space-y-4">
+        <input class="w-full p-3 rounded-md border border-[#D4AF37] bg-white text-[#3C2A1E]" type="text" placeholder="Your Name" required />
+        <input class="w-full p-3 rounded-md border border-[#D4AF37] bg-white text-[#3C2A1E]" type="email" placeholder="Email Address" required />
+        <textarea class="w-full p-3 rounded-md border border-[#D4AF37] bg-white text-[#3C2A1E]" rows="4" placeholder="Your Message"></textarea>
+        <button type="submit" class="bg-[#D4AF37] hover:bg-yellow-400 text-black px-6 py-3 rounded-md font-semibold transition">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-[#3C2A1E] text-[#F4EDE4] py-6 text-center">
+    <p>&copy; 2025 Cadenza School of Musica. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
