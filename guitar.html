@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadenza Academy – Master Your Skills</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Hero background & float animation */
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                  url('guitar2.jpeg');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero > div {
+      position: relative;
+      z-index: 1;
+    }
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%   { transform: translateY(0);    }
+      50%  { transform: translateY(-15px);}
+      100% { transform: translateY(0);    }
+    }
+
+    /* Card hovers */
+    .instructor-card:hover {
+      transform: translateY(-10px);
+      box-shadow:
+        0 20px 25px -5px rgba(0,0,0,0.1),
+        0 10px 10px -5px rgba(0,0,0,0.04);
+    }
+    .pricing-card:hover {
+      transform: scale(1.05);
+    }
+
+    /* COLOR OVERRIDES */
+    :root {
+      --copper:   #7C4226;
+      --offwhite: #F9F5F2;
+      --gold:     #D4AF37;
+    }
+    .bg-gray-50, .bg-gray-100        { background-color: var(--offwhite) !important; }
+    .bg-gray-900                     { background-color: var(--copper)   !important; }
+    .text-white                      { color:            var(--offwhite) !important; }
+    .text-gray-800, .text-gray-900   { color:            var(--copper)   !important; }
+    .text-gray-600                   { color: rgba(124,66,38,0.7)        !important; }
+    .bg-yellow-500,
+    .hover\:bg-yellow-500:hover,
+    .hover\:bg-yellow-600:hover       { background-color: var(--gold)     !important; }
+    .text-yellow-500                 { color:            var(--gold)     !important; }
+    .border-yellow-500               { border-color:     var(--gold)     !important; }
+  </style>
+</head>
+<body class="font-sans bg-gray-50">
+  <!-- Navigation -->
+  <nav class="bg-gray-900 text-white sticky top-0 z-50 shadow-lg">
+    <div class="container mx-auto px-6 py-4">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center space-x-4">
+            <i class="fas fa-guitar text-2xl text-yellow-400"></i>
+            <a href="index.html" class="font-bold text-xl hover:text-yellow-400">Cadenza</a>
+        </div>
+        <div class="hidden md:flex space-x-8">
+          <a href="#about" class="hover:text-yellow-400 transition">About</a>
+          <a href="#advantages" class="hover:text-yellow-400 transition">Advantages</a>
+          <a href="#instructors" class="hover:text-yellow-400 transition">Instructors</a>
+          <a href="#pricing" class="hover:text-yellow-400 transition">Pricing</a>
+          <a href="#contact" class="hover:text-yellow-400 transition">Contact</a>
+        </div>
+        <button class="md:hidden focus:outline-none">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero min-h-screen flex items-center justify-center text-white">
+    <div class="container mx-auto px-6 text-center">
+      <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-float">Master the Guitar</h1>
+      <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
+        Transform your musical journey with our expert-led guitar courses designed for all skill levels.
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a href="#pricing"
+           class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
+          Enroll Now
+        </a>
+        <a href="#about"
+           class="bg-transparent hover:bg-gray-800 border-2 border-white text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
+          Learn More
+        </a>
+      </div>
+    </div>
+  </section>
+
+    <!-- About Course Section -->
+  <section id="about" class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">About Our Courses</h2>
+        <div class="w-24 h-1 bg-yellow-500 mx-auto"></div>
+      </div>
+      <div class="flex flex-col md:flex-row items-center gap-12">
+        <div class="md:w-1/2">
+          <img
+            src="guitar.jpg"
+            alt="Guitar Player"
+            class="rounded-lg shadow-xl w-1/2 h-auto mx-auto"
+          />
+        </div>
+        <div class="md:w-1/2">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">Learn Guitar the Right Way</h3>
+          <p class="text-gray-600 mb-6">
+            Our comprehensive guitar courses are designed to take you from beginner to advanced player through structured lessons, personalized feedback, and a proven curriculum developed by professional musicians.
+          </p>
+          <div class="space-y-4">
+            <div class="flex items-start">
+              <i class="fas fa-check-circle text-yellow-500 text-xl mt-1"></i>
+              <p class="ml-3 text-gray-700 font-medium">Structured learning path for all levels</p>
+            </div>
+            <div class="flex items-start">
+              <i class="fas fa-check-circle text-yellow-500 text-xl mt-1"></i>
+              <p class="ml-3 text-gray-700 font-medium">Learn at your own pace with 24/7 access</p>
+            </div>
+            <div class="flex items-start">
+              <i class="fas fa-check-circle text-yellow-500 text-xl mt-1"></i>
+              <p class="ml-3 text-gray-700 font-medium">Weekly live Q&A sessions with instructors</p>
+            </div>
+          </div>
+          <a href="#advantages" class="inline-block mt-8 bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-6 rounded transition duration-300">
+            Discover Advantages
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Course Advantages Section -->
+  <section id="advantages" class="py-20 bg-gray-100">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Why Choose Our Courses</h2>
+        <div class="w-24 h-1 bg-yellow-500 mx-auto"></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition duration-300">
+          <i class="fas fa-chalkboard-teacher text-4xl text-yellow-500 mb-4"></i>
+          <h3 class="text-xl font-bold text-gray-800 mb-3">Expert Instructors</h3>
+          <p class="text-gray-600">Learn from professional guitarists with years of teaching and performance experience across various genres.</p>
+        </div>
+        <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition duration-300">
+          <i class="fas fa-layer-group text-4xl text-yellow-500 mb-4"></i>
+          <h3 class="text-xl font-bold text-gray-800 mb-3">Comprehensive Curriculum</h3>
+          <p class="text-gray-600">Our step-by-step program covers everything from basic chords to advanced techniques and music theory.</p>
+        </div>
+        <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition duration-300">
+          <i class="fas fa-video text-4xl text-yellow-500 mb-4"></i>
+          <h3 class="text-xl font-bold text-gray-800 mb-3">HD Video Lessons</h3>
+          <p class="text-gray-600">High-quality video lessons with multiple camera angles so you can see exactly how each technique is performed.</p>
+        </div>
+        <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition duration-300">
+          <i class="fas fa-music text-4xl text-yellow-500 mb-4"></i>
+          <h3 class="text-xl font-bold text-gray-800 mb-3">Play Along Tracks</h3>
+          <p class="text-gray-600">Practice with professionally recorded backing tracks at various tempos to develop your timing and feel.</p>
+        </div>
+        <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition duration-300">
+          <i class="fas fa-comments text-4xl text-yellow-500 mb-4"></i>
+          <h3 class="text-xl font-bold text-gray-800 mb-3">Community Support</h3>
+          <p class="text-gray-600">Join our exclusive student community to share progress, get feedback, and connect with fellow guitarists.</p>
+        </div>
+        <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition duration-300">
+          <i class="fas fa-certificate text-4xl text-yellow-500 mb-4"></i>
+          <h3 class="text-xl font-bold text-gray-800 mb-3">Certification</h3>
+          <p class="text-gray-600">Earn a recognized certificate upon course completion to showcase your achievement and skills.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Course Instructors Section -->
+  <section id="instructors" class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Meet Our Instructors</h2>
+        <div class="w-24 h-1 bg-yellow-500 mx-auto"></div>
+        <p class="text-gray-600 max-w-2xl mx-auto mt-4">Our team of professional guitarists brings decades of combined teaching and performance experience.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Instructor 1 -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden instructor-card transition duration-300">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80"
+               alt="Instructor"
+               class="w-full h-64 object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-1">Michael Johnson</h3>
+            <p class="text-yellow-500 font-medium mb-3">Lead Guitar Specialist</p>
+            <p class="text-gray-600 mb-4">With 15 years of touring experience, Michael specializes in rock and blues guitar techniques.</p>
+            <div class="flex space-x-3">
+              <a href="#" class="text-gray-400 hover:text-yellow-500 transition"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="text-gray-400 hover:text-yellow-500 transition"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="text-gray-400 hover:text-yellow-500 transition"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+        <!-- Instructor 2 -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden instructor-card transition duration-300">
+          <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by
+
+                   <!-- Instructor 2 -->
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden instructor-card transition duration-300">
+            <img
+              src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80"
+              alt="Instructor"
+              class="w-full h-64 object-cover"
+            />
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-800 mb-1">Sarah Williams</h3>
+              <p class="text-yellow-500 font-medium mb-3">Classical Guitar</p>
+              <p class="text-gray-600 mb-4">
+                Sarah holds a Master's in Classical Guitar Performance and teaches fingerstyle techniques.
+              </p>
+              <div class="flex space-x-3">
+                <a href="#" class="text-gray-400 hover:text-yellow-500 transition">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-yellow-500 transition">
+                  <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-yellow-500 transition">
+                  <i class="fab fa-instagram"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Instructor 3 -->
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden instructor-card transition duration-300">
+            <img
+              src="https://images.unsplash.com/photo-1542178243-bc20204b769f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=580&q=80"
+              alt="Instructor"
+              class="w-full h-64 object-cover"
+            />
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-800 mb-1">David Chen</h3>
+              <p class="text-yellow-500 font-medium mb-3">Jazz & Theory</p>
+              <p class="text-gray-600 mb-4">
+                David brings complex jazz concepts to life with his clear teaching approach and real-world examples.
+              </p>
+              <div class="flex space-x-3">
+                <a href="#" class="text-gray-400 hover:text-yellow-500 transition">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-yellow-500 transition">
+                  <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-yellow-500 transition">
+                  <i class="fab fa-instagram"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Instructor 4 -->
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden instructor-card transition duration-300">
+            <img
+              src="https://images.unsplash.com/photo-1545167622-3a6ac756afa4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=712&q=80"
+              alt="Instructor"
+              class="w-full h-64 object-cover"
+            />
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-800 mb-1">Emma Rodriguez</h3>
+              <p class="text-yellow-500 font-medium mb-3">Beginner Fundamentals</p>
+              <p class="text-gray-600 mb-4">
+                Emma specializes in helping absolute beginners build confidence and develop proper technique.
+              </p>
+              <div class="flex space-x-3">
+                <a href="#" class="text-gray-400 hover:text-yellow-500 transition">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-yellow-500 transition">
+                  <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-yellow-500 transition">
+                  <i class="fab fa-instagram"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Course Pricing Section -->
+    <section id="pricing" class="py-20 bg-gray-100">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Course Pricing</h2>
+          <div class="w-24 h-1 bg-yellow-500 mx-auto"></div>
+          <p class="text-gray-600 max-w-2xl mx-auto mt-4">
+            Choose the plan that fits your learning goals and budget. All plans include full course access.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <!-- Basic Plan -->
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden pricing-card transition duration-300">
+            <div class="px-8 py-6 border-b border-gray-200">
+              <h3 class="text-xl font-bold text-gray-800">Basic</h3>
+              <p class="text-gray-600 mt-2">Perfect for beginners</p>
+            </div>
+            <div class="px-8 py-6">
+              <div class="flex items-baseline">
+                <span class="text-4xl font-bold text-gray-800">$19</span>
+                <span class="ml-1 text-gray-600">/month</span>
+              </div>
+              <p class="mt-2 text-gray-600">Billed annually or $25 month-to-month</p>
+            </div>
+            <div class="px-8 pb-8">
+              <ul class="space-y-3">
+                <li class="flex items-center">
+                  <i class="fas fa-check text-green-500 mr-2"></i>
+                  <span>Access to beginner courses</span>
+                </li>
+                <li class="flex items-center">
+                  <i class="fas fa-check text-green-500 mr-2"></i>
+                  <span>5 new lessons weekly</span>
+                </li>
+                <li class="flex items-center">
+                  <i class="fas fa-check text-green-500 mr-2"></i>
+                  <span>Community forum access</span>
+                </li>
+                <li class="flex items-center text-gray-400">
+                  <i class="fas fa-times text-red-400 mr-2"></i>
+                  <span>No live Q&A sessions</span>
+                </li>
+                <li class="flex items-center text-gray-400">
+                  <i class="fas fa-times text-red-400 mr-2"></i>
+                  <span>No instructor feedback</span>
+                </li>
+              </ul>
+              <a
+                href="#"
+                class="mt-8 block w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded text-center transition duration-300"
+              >
+                Get Started
+              </a>
+            </div>
+          </div>
+
+          <!-- Popular Plan -->
+          <div class="bg-white rounded-xl shadow-xl overflow-hidden pricing-card transform scale-105 border-2 border-yellow-500 relative">
+            <div class="absolute top-0 right-0 bg-yellow-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+              POPULAR
+            </div>
+            <div class="px-8 py-6 border-b border-gray-200">
+              <h3 class="text-xl font-bold text-gray-800">Pro</h3>
+              <p class="text-gray-600 mt-2">Best for serious learners</p>
+            </div>
+            <div class="px-8 py-6">
+              <div class="flex items-baseline">
+                <span class="text-4xl font-bold text-gray-800">$39</span>
+                <span class="ml-1 text-gray-600">/month</span>
+              </div>
+              <p class="mt-2 text-gray-600">Billed annually or $49 month-to-month</p>
+            </div>
+            <div class="px-8 pb-8">
+              <ul class="space-y-3">
+                <li class="flex items-center">
+                  <i class="fas fa-check text-green-500 mr-2"></i>
+                  <span>All beginner & intermediate courses</span>
+                </li>
+                <li class="flex items-center">
+                  <i class="fas fa-check text-green-500 mr-2"></i>
+                  <span>10+ new lessons weekly</span>
+                </li>
+                <li class="flex items-center">
+                  <i class="fas fa-check text-green-500 mr-2"></i>
+                  <span>Priority community access</span>
+                </li>
+                <li class="flex items-center">
+                  <i class="fas fa-check text-green-500 mr-2"></i>
+                  <span>Weekly live Q&A sessions</span>
+                </li>
+                <li class="flex items-center">
+                  <i class="fas fa-check text-green-500 mr-2"></i>
+                  <span>Monthly instructor feedback</span>
+                </li>
+              </ul>
+              <a
+                href="#"
+                class="mt-8 block w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-3 px-6 rounded text-center transition duration-300"
+              >
+                Get Started
+              </a>
+            </div>
+          </div>
+
+          <!-- Premium Plan -->
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden pricing-card transition duration-300">
+            <div class="px-8 py-6 border-b border-gray-200">
+              <h3 class="text-xl font-bold text-gray-800">Premium</h3>
+              <p class="text-gray-600 mt-2">For dedicated musicians</p>
+            </div>
+            <div class="px-8 py-6">
+              <div class="flex items-baseline">
+                <span class="text-4xl font-bold text-gray-800">$79</span>
+                <span class="ml-1 text-gray-600">/month</span>
+              </div>
+              <p class="mt-2 text-gray-600">Billed annually or $99 month-to-month</p>
+            </div>
+            <div class="px-8 pb-8">
+              <ul class="space-y-3">
+                <li class="flex items-center">
+                  <i class="fas fa-check text-green-500 mr-2"></i>
+                  <span>All courses (beginner to advanced)</span>
+                </li>
+                <li class="flex items-center">
+                  <i class="fas fa-check text-green-500 mr-2"></i>
+                  <span>15+ new lessons weekly</span>
+                </li>
+                <li class="flex items-center">
+                  <i class="fas fa-check text-green-500 mr-2"></i>
+                  <span>VIP community access</span>
+                </li>
+                <li class="flex items-center">
+                  <i class="fas fa-check text-green-500 mr-2"></i>
+                  <span>Unlimited live Q&A sessions</span>
+                </li>
+                <li class="flex items-center">
+                  <i class="fas fa-check text-green-500 mr-2"></i>
+                  <span>Weekly personalized feedback</span>
+                </li>
+              </ul>
+              <a
+                href="#"
+                class="mt-8 block w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-6 rounded text-center transition duration-300"
+              >
+                Get Started
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-12 text-center">
+          <p class="text-gray-600">
+            Not sure which plan is right for you?
+            <a href="#contact" class="text-yellow-500 hover:text-yellow-600 font-medium">
+              Contact us
+            </a>
+            and we'll help you choose.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Get in Touch Section -->
+    <section id="contact" class="py-20 bg-white">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Get In Touch</h2>
+          <div class="w-24 h-1 bg-yellow-500 mx-auto"></div>
+          <p class="text-gray-600 max-w-2xl mx-auto mt-4">
+            Have questions about our courses? Want to schedule a free trial lesson? Reach out to us!
+          </p>
+        </div>
+        <div class="flex flex-col lg:flex-row gap-12">
+          <div class="lg:w-1/2">
+            <form class="space-y-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label for="name" class="block text-gray-700 font-medium mb-2">Name</label>
+                  <input type="text" id="name"
+                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 outline-none transition"
+                         placeholder="Your name">
+                </div>
+                <div>
+                  <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+                  <input type="email" id="email"
+                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 outline-none transition"
+                         placeholder="Your email">
+                </div>
+              </div>
+              <div>
+                <label for="subject" class="block text-gray-700 font-medium mb-2">Subject</label>
+                <input type="text" id="subject"
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 outline-none transition"
+                       placeholder="Subject">
+              </div>
+              <div>
+                <label for="message" class="block text-gray-700 font-medium mb-2">Message</label>
+                <textarea id="message" rows="5"
+                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 outline-none transition"
+                          placeholder="Your message"></textarea>
+              </div>
+              <button type="submit"
+                      class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-3 px-6 rounded transition duration-300">
+                Send Message
+              </button>
+            </form>
+          </div>
+          <div class="lg:w-1/2">
+            <div class="bg-gray-100 p-8 rounded-lg h-full">
+              <h3 class="text-xl font-bold text-gray-800 mb-6">Contact Information</h3>
+              <div class="space-y-6">
+                
+                <div class="flex items-start">
+                  <div class="flex-shrink-0 mt-1">
+                    <i class="fas fa-phone-alt text-yellow-500 text-xl"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h4 class="text-gray-800 font-medium">Phone</h4>
+                    <p class="text-gray-600">+91 1234567890</p>
+                    <p class="text-gray-600">Mon-Fri, 9am-5pm CST</p>
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <div class="flex-shrink-0 mt-1">
+                    <i class="fas fa-envelope text-yellow-500 text-xl"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h4 class="text-gray-800 font-medium">Email</h4>
+                    <p class="text-gray-600">info@Cadenza.com</p>
+                    <p class="text-gray-600">support@Cadenza.com</p>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-8">
+                <h4 class="text-gray-800 font-medium mb-4">Follow Us</h4>
+                <div class="flex space-x-4">
+                  <a href="#" class="w-10 h-10 rounded-full bg-gray-200 hover:bg-yellow-500 flex items-center justify-center text-gray-700 hover:text-white transition duration-300">
+                    <i class="fab fa-facebook-f"></i>
+                  </a>
+                  <a href="#" class="w-10 h-10 rounded-full bg-gray-200 hover:bg-yellow-500 flex items-center justify-center text-gray-700 hover:text-white transition duration-300">
+                    <i class="fab fa-twitter"></i>
+                  </a>
+                  <a href="#" class="w-10 h-10 rounded-full bg-gray-200 hover:bg-yellow-500 flex items-center justify-center text-gray-700 hover:text-white transition duration-300">
+                    <i class="fab fa-instagram"></i>
+                  </a>
+                  <a href="#" class="w-10 h-10 rounded-full bg-gray-200 hover:bg-yellow-500 flex items-center justify-center text-gray-700 hover:text-white transition duration-300">
+                    <i class="fab fa-youtube"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+
+    <script>
+      // Smooth scrolling
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+
+      // Mobile menu toggle placeholder
+      document.querySelector('.md\\:hidden').addEventListener('click', () => {
+        alert('Mobile menu would open here in a complete implementation');
+      });
+    </script>
+</body>
+</html>
