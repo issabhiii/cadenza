@@ -1,0 +1,18 @@
+# supabase/config.toml
+
+[functions.send-contact-notification]
+enabled     = true
+verify_jwt  = true
+import_map  = "./functions/send-contact-notification/deno.json"
+entrypoint  = "./functions/send-contact-notification/index.ts"
+# static_files = [ "./functions/send-contact-notification/*.html" ]
+
+[functions."send-contact-notification".env]
+# your public project URL
+SUPABASE_URL               = "https://xzydohefpyxsputkzawf.supabase.co"
+# your service-role (must be the SERVICE_ROLE_KEY, *not* the anon key)
+SUPABASE_SERVICE_ROLE_KEY  = "<YOUR_SERVICE_ROLE_KEY>"
+
+# Mailgun (or whichever email provider you chose)
+MAILGUN_API_KEY            = "<YOUR_MAILGUN_PRIVATE_KEY>"
+MAILGUN_DOMAIN             = "<YOUR_MAILGUN_DOMAIN>"
