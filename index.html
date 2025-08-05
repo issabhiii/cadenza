@@ -5,96 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cadenza - Indian Vocal Music Academy</title>
 
-  <!-- Tailwind CDN (for quick dev; swap to proper build in prod) -->
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
 
   <!-- Spline Viewer -->
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.39/build/spline-viewer.js"></script>
+  <script
+    type="module"
+    src="https://unpkg.com/@splinetool/viewer@1.10.39/build/spline-viewer.js"
+  ></script>
+
+  <!-- Supabase JS Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- our Supabase helper (initializes client & exposes saveContact) -->
+  <!-- instead of <script defer src="supabase.js"></script> -->
+  <script defer src="supabaseClient.js"></script>
+
 
   <!-- EmailJS v4 browser bundle -->
-  <script
-    type="text/javascript"
-    src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
-  ></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
-    // Initialize EmailJS with your public key
+    // Initialize EmailJS
     emailjs.init("AhtLZTPsQ3L2yS1Tw");
   </script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #F4EDE4;
-      color: #3C2A1E;
-    }
-
-    .hero-gradient {
-      background: linear-gradient(135deg, #754032 0%, #4A2C21 100%);
-    }
-
-    .bg-fixed-hero {
-      background-image: url('backgroundaiimg.jpg');
-      background-size: cover;
-      background-attachment: fixed;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-
-    .service-card {
-      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
-    }
-
-    .service-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 25px 40px rgba(0, 0, 0, 0.2);
-    }
-
-    .testimonial-card {
-      transition: all 0.3s ease;
-    }
-
-    .testimonial-card:hover {
-      transform: scale(1.03);
-    }
-
-    .nav-link {
-      position: relative;
-    }
-
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Poppins', sans-serif; background-color: #F4EDE4; color: #3C2A1E; }
+    .hero-gradient { background: linear-gradient(135deg, #754032 0%, #4A2C21 100%); }
+    .service-card { transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), box-shadow 0.4s ease; }
+    .service-card:hover { transform: translateY(-8px); box-shadow: 0 25px 40px rgba(0,0,0,0.2); }
+    .testimonial-card { transition: all 0.3s ease; }
+    .testimonial-card:hover { transform: scale(1.03); }
+    .nav-link { position: relative; }
     .nav-link::after {
       content: '';
-      position: absolute;
-      width: 0;
-      height: 2px;
-      bottom: 0;
-      left: 0;
+      position: absolute; width: 0; height: 2px;
+      bottom: 0; left: 0;
       background-color: #D4AF37;
       transition: width 0.3s ease;
     }
-
-    .nav-link:hover::after {
-      width: 100%;
-    }
-
-    spline-viewer {
-      width: 90%;
-      height: 469px;
-      pointer-events: auto !important;
-    }
-
+    .nav-link:hover::after { width: 100%; }
+    spline-viewer { width: 90%; height: 469px; pointer-events: auto !important; }
     @media (max-width: 768px) {
-      spline-viewer {
-        height: 280px;
-        transform: scale(1);
-        transform-origin: center;
-      }
+      spline-viewer { height: 280px; transform: scale(1); transform-origin: center; }
     }
   </style>
 </head>
@@ -112,7 +70,7 @@
         <div class="hidden md:flex gap-8 text-[#F4EDE4] font-medium">
           <a href="#about" class="nav-link hover:text-[#D4AF37] transition">About</a>
           <a href="#services" class="nav-link hover:text-[#D4AF37] transition">Courses</a>
-          <a href="#testimonials" class="nav-link hover:text-[#D4AF37] transition">Instructors</a>
+          <a href="#testimonials" class="nav-link hover:text-[#D4AF37] transition">Testimonials</a>
           <a href="#contact" class="nav-link hover:text-[#D4AF37] transition">Contact</a>
         </div>
       </div>
@@ -327,71 +285,90 @@
   </section>
 
   <!-- Contact Section -->
-  <section id="contact" class="py-16 hero-gradient text-[#F4EDE4]">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <h2 class="text-3xl font-bold">Start Your Musical Journey</h2>
-      <p class="mt-4 text-lg">Fill the form and we’ll send you our next steps!</p>
-      <form id="contactForm" class="mt-8 space-y-4">
-        <input
-          name="visitor_name"
-          class="w-full p-3 rounded-md border border-[#D4AF37] bg-white text-[#3C2A1E]"
-          type="text"
-          placeholder="Your Name"
-          required
-        />
-        <input
-          id="visitor_email"
-          name="visitor_email"
-          class="w-full p-3 rounded-md border border-[#D4AF37] bg-white text-[#3C2A1E]"
-          type="email"
-          placeholder="Your Email"
-          required
-        />
-        <textarea
-          name="message"
-          class="w-full p-3 rounded-md border border-[#D4AF37] bg-white text-[#3C2A1E]"
-          rows="4"
-          placeholder="Your Message"
-        ></textarea>
-        <button
-          type="submit"
-          class="bg-[#D4AF37] hover:bg-yellow-400 text-black px-6 py-3 rounded-md font-semibold transition"
-        >
-          Send Message
-        </button>
-      </form>
-    </div>
-  </section>
+<section id="contact" class="py-16 hero-gradient text-[#F4EDE4]">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold">Start Your Musical Journey</h2>
+    <p class="mt-4 text-lg">Fill the form and we’ll reach out to you!</p>
 
-  <!-- Footer -->
-  <footer class="bg-[#3C2A1E] text-[#F4EDE4] py-6 text-center">
-    <p>&copy; 2025 Cadenza School of Musica. All rights reserved.</p>
-  </footer>
+    <form id="contactForm" class="mt-8 space-y-4">
+      <input
+        id="visitor_name"
+        name="visitor_name"
+        class="w-full p-3 rounded-md border border-[#D4AF37] bg-white text-[#3C2A1E]"
+        type="text"
+        placeholder="Your Name"
+        required
+      />
+      <input
+        id="visitor_email"
+        name="visitor_email"
+        class="w-full p-3 rounded-md border border-[#D4AF37] bg-white text-[#3C2A1E]"
+        type="email"
+        placeholder="Your Email"
+        required
+      />
+      <input
+        id="visitor_whatsapp"
+        name="visitor_whatsapp"
+        class="w-full p-3 rounded-md border border-[#D4AF37] bg-white text-[#3C2A1E]"
+        type="text"
+        placeholder="Contact / WhatsApp Number"
+        required
+      />
+      <textarea
+        id="message"
+        name="message"
+        class="w-full p-3 rounded-md border border-[#D4AF37] bg-white text-[#3C2A1E]"
+        rows="4"
+        placeholder="Your Message"
+      ></textarea>
+      <button
+        type="submit"
+        class="bg-[#D4AF37] hover:bg-yellow-400 text-black px-6 py-3 rounded-md font-semibold transition"
+      >
+        Send Message
+      </button>
+    </form>
+  </div>
+</section>
 
-  <!-- EmailJS send() handler -->
-  <script>
-    document
-      .getElementById("contactForm")
-      .addEventListener("submit", function(e) {
-        e.preventDefault();
-        // grab the email the user typed in
-        const userEmail = document.getElementById("visitor_email").value;
+<!-- FORM HANDLER: Supabase + EmailJS -->
+<script>
+  document
+    .getElementById("contactForm")
+    .addEventListener("submit", async function(e) {
+      e.preventDefault();
 
-        emailjs
-          .send(
-            "service_s69ud1n",   // ← your Service ID
-            "template_x8ylvsr",  // ← your Template ID
-            { email: userEmail } // ← keys match your template variables
-          )
-          .then(() => {
-            alert("Thanks—your message has been sent!");
-            this.reset();
-          })
-          .catch(err => {
-            console.error("EmailJS error:", err);
-            alert("Oops, something went wrong. Please try again.");
-          });
+      const name         = document.getElementById("visitor_name").value;
+      const visitorEmail = document.getElementById("visitor_email").value;
+      const whatsapp     = document.getElementById("visitor_whatsapp").value;
+      const message      = document.getElementById("message").value;
+
+      // 1) Save into Supabase
+      try {
+        await saveContact(name, visitorEmail, whatsapp, message);
+      } catch (err) {
+        console.error("Supabase error:", err);
+        alert("Oops, could not save your message.");
+        return;
+      }
+
+      // 2) Send only the email field to EmailJS
+      emailjs.send(
+        "service_s69ud1n",     // your Service ID
+        "template_x8ylvsr",    // your Template ID
+        { email: visitorEmail } // <-- only the email address
+      )
+      .then(() => {
+        alert("Thanks—your message has been sent!");
+        this.reset();
+      })
+      .catch(err => {
+        console.error("EmailJS error:", err);
+        alert("Saved to database but failed to send email.");
       });
-  </script>
+    });
+</script>
+
 </body>
 </html>
