@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cadenza - Indian Vocal Music Academy</title>
+  <title>Cadenza – Indian Vocal Music Academy</title>
 
-  <!-- Tailwind CDN -->
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link
     rel="stylesheet"
@@ -18,17 +18,13 @@
     src="https://unpkg.com/@splinetool/viewer@1.10.39/build/spline-viewer.js"
   ></script>
 
-  <!-- Supabase JS Library -->
+  <!-- Supabase JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- our Supabase helper (initializes client & exposes saveContact) -->
-  <!-- instead of <script defer src="supabase.js"></script> -->
   <script defer src="supabaseClient.js"></script>
 
-
-  <!-- EmailJS v4 browser bundle -->
+  <!-- EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
-    // Initialize EmailJS
     emailjs.init("AhtLZTPsQ3L2yS1Tw");
   </script>
 
@@ -283,92 +279,39 @@
       </div>
     </div>
   </section>
-
-  <!-- Contact Section -->
+  <!-- Contact & Scheduler Section -->
 <section id="contact" class="py-16 hero-gradient text-[#F4EDE4]">
-  <div class="max-w-4xl mx-auto px-4 text-center">
-    <h2 class="text-3xl font-bold">Start Your Musical Journey</h2>
-    <p class="mt-4 text-lg">Fill the form and we’ll reach out to you!</p>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col lg:flex-row gap-8">
 
-    <form id="contactForm" class="mt-8 space-y-4">
-      <input
-        id="visitor_name"
-        name="visitor_name"
-        class="w-full p-3 rounded-md border border-[#D4AF37] bg-white text-[#3C2A1E]"
-        type="text"
-        placeholder="Your Name"
-        required
-      />
-      <input
-        id="visitor_email"
-        name="visitor_email"
-        class="w-full p-3 rounded-md border border-[#D4AF37] bg-white text-[#3C2A1E]"
-        type="email"
-        placeholder="Your Email"
-        required
-      />
-      <input
-        id="visitor_whatsapp"
-        name="visitor_whatsapp"
-        class="w-full p-3 rounded-md border border-[#D4AF37] bg-white text-[#3C2A1E]"
-        type="text"
-        placeholder="Contact / WhatsApp Number"
-        required
-      />
-      <textarea
-        id="message"
-        name="message"
-        class="w-full p-3 rounded-md border border-[#D4AF37] bg-white text-[#3C2A1E]"
-        rows="4"
-        placeholder="Your Message"
-      ></textarea>
-      <button
-        type="submit"
-        class="bg-[#D4AF37] hover:bg-yellow-400 text-black px-6 py-3 rounded-md font-semibold transition"
-      >
-        Send Message
-      </button>
-    </form>
+      <!-- Contact Form -->
+      <div class="w-full lg:w-1/2 bg-white text-[#3C2A1E] p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold mb-4">Start Your Musical Journey</h2>
+        <p class="mb-6">Fill the form and we’ll reach out to you!</p>
+        <form id="contactForm" class="space-y-4">
+          <input id="visitor_name" name="visitor_name" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white" type="text" placeholder="Your Name" required />
+          <input id="visitor_email" name="visitor_email" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white" type="email" placeholder="Your Email" required />
+          <input id="visitor_whatsapp" name="visitor_whatsapp" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white" type="text" placeholder="Contact / WhatsApp" required />
+          <textarea id="message" name="message" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white" rows="4" placeholder="Your Message"></textarea>
+          <button type="submit" class="bg-[#D4AF37] hover:bg-yellow-400 text-black px-6 py-3 rounded-md font-semibold transition">Send Message</button>
+        </form>
+      </div>
+
+      <!-- Calendar Scheduler -->
+      <div class="w-full lg:w-1/2">
+        <h2 class="text-3xl font-bold mb-4 text-[#F4EDE4]">Book a Session</h2>
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <iframe
+            src="calendar.html"
+            class="w-full h-[80vh] md:h-[600px] border-none"
+            title="Class Scheduler">
+          </iframe>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
-
-<!-- FORM HANDLER: Supabase + EmailJS -->
-<script>
-  document
-    .getElementById("contactForm")
-    .addEventListener("submit", async function(e) {
-      e.preventDefault();
-
-      const name         = document.getElementById("visitor_name").value;
-      const visitorEmail = document.getElementById("visitor_email").value;
-      const whatsapp     = document.getElementById("visitor_whatsapp").value;
-      const message      = document.getElementById("message").value;
-
-      // 1) Save into Supabase
-      try {
-        await saveContact(name, visitorEmail, whatsapp, message);
-      } catch (err) {
-        console.error("Supabase error:", err);
-        alert("Oops, could not save your message.");
-        return;
-      }
-
-      // 2) Send only the email field to EmailJS
-      emailjs.send(
-        "service_s69ud1n",     // your Service ID
-        "template_x8ylvsr",    // your Template ID
-        { email: visitorEmail } // <-- only the email address
-      )
-      .then(() => {
-        alert("Thanks—your message has been sent!");
-        this.reset();
-      })
-      .catch(err => {
-        console.error("EmailJS error:", err);
-        alert("Saved to database but failed to send email.");
-      });
-    });
-</script>
 
 </body>
 </html>
