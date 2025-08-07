@@ -7,20 +7,23 @@
 
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
 
   <!-- Spline Viewer -->
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.39/build/spline-viewer.js"></script>
-
-  <!-- Supabase JS -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script defer src="supabaseClient.js"></script>
+  <script
+    type="module"
+    src="https://unpkg.com/@splinetool/viewer@1.10.39/build/spline-viewer.js"
+  ></script>
 
   <!-- EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     emailjs.init("AhtLZTPsQ3L2yS1Tw");
   </script>
+
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
@@ -272,22 +275,67 @@
   </section>
   <!-- Contact & Scheduler Section -->
 <section id="contact" class="py-16 hero-gradient text-[#F4EDE4]">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"> <!-- Changed from max-w-4xl to max-w-6xl -->
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col md:flex-row gap-8 text-[#3C2A1E]">
       <!-- Unified Form -->
       <form id="unifiedForm" class="w-full md:w-1/2 space-y-4 flex flex-col justify-between">
-        <div>
-          <h2 class="text-3xl font-bold mb-4">Start Your Musical Journey & Book a Session</h2>
-          <p class="mb-6">Fill the form and select a slot to schedule your class!</p>
-          <input id="visitor_name" name="visitor_name" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2" type="text" placeholder="Your Name" required />
-          <input id="visitor_email" name="visitor_email" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2" type="email" placeholder="Your Email" required />
-          <input id="visitor_whatsapp" name="visitor_whatsapp" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2" type="text" placeholder="Contact / WhatsApp" required />
-        </div>
         <!-- Hidden fields to store calendar info -->
         <input type="hidden" id="calendar_date" name="calendar_date" required />
         <input type="hidden" id="calendar_time" name="calendar_time" required />
         <input type="hidden" id="calendar_timezone" name="calendar_timezone" required />
         <input type="hidden" id="calendar_link" name="calendar_link" required />
+
+        <!-- Registration fields START here -->
+        <input id="reg_name" name="name" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2" type="text" placeholder="Your Name" required />
+
+        <input id="reg_email" name="email" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2" type="email" placeholder="Your Email" required />
+
+        <input id="reg_phone" name="phone" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2"
+          type="text"
+          placeholder="A WhatsApp enabled number is preferred"
+          required
+          onfocus="this.placeholder='';"
+          onblur="if(this.value===''){this.placeholder='A WhatsApp enabled number is preferred';}" />
+
+        <input id="reg_age" name="age" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2" type="number" min="1" max="120" placeholder="Your Age" required />
+
+        <select id="reg_course" name="course" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2" required>
+          <option value="" disabled selected>Select a Course</option>
+          <option value="acoustic guitar">Acoustic Guitar</option>
+          <option value="electric guitar">Electric Guitar</option>
+          <option value="tabla">Tabla</option>
+          <option value="hindustani vocals">Hindustani Vocals</option>
+          <option value="bollywood vocals">Bollywood Vocals</option>
+          <option value="piano">Piano</option>
+          <option value="kathak">Kathak</option>
+          <option value="music production">Music Production</option>
+        </select>
+
+        <textarea id="reg_experience" name="previous_experience"
+          class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2"
+          rows="3"
+          placeholder="Please tell us about your previous experiences, or what you hope to achieve"
+          onfocus="this.placeholder='';"
+          onblur="if(this.value===''){this.placeholder='Please tell us about your previous experiences, or what you hope to achieve';}"
+          required></textarea>
+
+        <input list="country-list" id="reg_country" name="country"
+          class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2"
+          placeholder="Country" required />
+        <datalist id="country-list">
+          <option value="India">
+          <option value="United States">
+          <option value="United Kingdom">
+          <option value="Canada">
+          <option value="Australia">
+          <option value="Singapore">
+          <option value="United Arab Emirates">
+          <option value="Germany">
+          <option value="France">
+          <option value="Other">
+        </datalist>
+        <!-- Registration fields END here -->
+
         <button type="submit" id="schedule-btn" class="w-full bg-[#D4AF37] hover:bg-yellow-400 text-black px-6 py-3 rounded-md font-semibold transition text-lg mt-4">
           Schedule Your Class Now!
         </button>
@@ -333,120 +381,130 @@
     </div>
   </div>
 </div>
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- 2) Your client‐wrapper that sets window.saveRegistration -->
+  <script src="supabaseClient.js"></script>
+   <script>
+    console.log("Custom script loaded!");
+    console.log("supabase:", supabase, "saveRegistration:", window.saveRegistration);
 
-<script>
-  // Store calendar info from iframe
-  window.addEventListener('message', function(event) {
-    if (event.data && event.data.type === 'calendar-link' && event.data.url) {
-      // Show the modal
-      document.getElementById('success-modal').classList.remove('hidden');
-      // Set the Google Calendar link on the modal button
-      document.getElementById('calendar-link-modal-btn').href = event.data.url;
+    // a) Listen for slot info from the iframe
+    window.addEventListener('message', e => {
+      if (e.data?.type === 'calendar-info') {
+        console.log('← calendar-info received:', e.data);
+        document.getElementById('calendar_date').value     = e.data.date;
+        document.getElementById('calendar_time').value     = e.data.time;
+        document.getElementById('calendar_timezone').value = e.data.timezone;
+      }
+    });
 
-      // Fill hidden fields for form submission
-      document.getElementById('calendar_link').value = event.data.url;
-      if (event.data.date) document.getElementById('calendar_date').value = event.data.date;
-      if (event.data.time) document.getElementById('calendar_time').value = event.data.time;
-      if (event.data.timezone) document.getElementById('calendar_timezone').value = event.data.timezone;
-    }
-    // Listen for slot selection info from calendar.html
-    if (event.data && event.data.type === 'calendar-info') {
-      if (event.data.date) document.getElementById('calendar_date').value = event.data.date;
-      if (event.data.time) document.getElementById('calendar_time').value = event.data.time;
-      if (event.data.timezone) document.getElementById('calendar_timezone').value = event.data.timezone;
-    }
-  });
+    const unifiedForm = document.getElementById('unifiedForm');
+    console.log("unifiedForm found:", !!unifiedForm);
 
-  // Close modal with the cross button
-  document.getElementById('close-success-modal').addEventListener('click', function() {
-    document.getElementById('success-modal').classList.add('hidden');
-  });
+    unifiedForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      console.log("Form submitted!");
 
-  // Optional: Hide modal when user clicks outside the popup or presses Escape
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-      document.getElementById('success-modal').classList.add('hidden');
-    }
-  });
-  document.getElementById('success-modal').addEventListener('click', function(e) {
-    if (e.target === this) {
-      this.classList.add('hidden');
-    }
-  });
+      // Gather values
+      const name  = document.getElementById('reg_name').value.trim();
+      const email = document.getElementById('reg_email').value.trim();
+      const phone = document.getElementById('reg_phone').value.trim();
+      const age   = document.getElementById('reg_age').value.trim();
+      const course = document.getElementById('reg_course').value;
+      const previous_experience = document.getElementById('reg_experience').value.trim();
+      const country = document.getElementById('reg_country').value.trim();
 
-  // Unified form validation and EmailJS send
-  document.getElementById('unifiedForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+      const calendar_date     = document.getElementById('calendar_date').value.trim();
+      const calendar_time     = document.getElementById('calendar_time').value.trim();
+      const calendar_timezone = document.getElementById('calendar_timezone').value.trim();
 
-    // Validate all required fields
-    const name = document.getElementById('visitor_name').value.trim();
-    const email = document.getElementById('visitor_email').value.trim();
-    const whatsapp = document.getElementById('visitor_whatsapp').value.trim();
-    const calendar_date = document.getElementById('calendar_date').value.trim();
-    const calendar_time = document.getElementById('calendar_time').value.trim();
-    const calendar_timezone = document.getElementById('calendar_timezone').value.trim();
+      // Missing-fields check
+      const missing = [];
+      if (!name)                missing.push('Name');
+      if (!email)               missing.push('Email');
+      if (!phone)               missing.push('Phone');
+      if (!age)                 missing.push('Age');
+      if (!course)              missing.push('Course');
+      if (!previous_experience) missing.push('Previous experience');
+      if (!country)             missing.push('Country');
+      if (!calendar_date)       missing.push('Selected date');
+      if (!calendar_time)       missing.push('Selected time');
+      if (!calendar_timezone)   missing.push('Timezone');
 
-    if (!name || !email || !whatsapp || !calendar_date || !calendar_time || !calendar_timezone) {
-      alert('Please fill out all fields and select a time slot before scheduling.');
-      return;
-    }
+      if (missing.length) {
+        console.warn('Missing fields:', missing);
+        return alert(
+          'Please fill out the following fields:\n• ' + missing.join('\n• ')
+        );
+      }
 
-    // --- Generate Google Calendar Link ---
-    const [startStr, endStr] = calendar_time.split(' - ');
-    function parseTime(date, timeStr) {
-      const [time, modifier] = timeStr.split(' ');
-      let [hours, minutes] = time.split(':').map(Number);
-      if (modifier === 'PM' && hours < 12) hours += 12;
-      if (modifier === 'AM' && hours === 12) hours = 0;
-      const d = new Date(date);
-      d.setHours(hours, minutes, 0, 0);
-      return d;
-    }
-    const startDate = parseTime(calendar_date, startStr);
-    const endDate = parseTime(calendar_date, endStr);
+      // Generate Google Calendar link
+      const [startStr, endStr] = calendar_time.split(' - ');
+      const parseTime = (date, timeStr) => {
+        const [time, mod] = timeStr.split(' ');
+        let [h, m] = time.split(':').map(Number);
+        if (mod==='PM'&&h<12) h+=12;
+        if (mod==='AM'&&h===12) h=0;
+        const d = new Date(date);
+        d.setHours(h, m,0,0);
+        return d.toISOString()
+                .replace(/[-:]/g,'')
+                .replace(/\.\d{3}Z$/,'Z');
+      };
+      const startUTC = parseTime(calendar_date, startStr);
+      const endUTC   = parseTime(calendar_date, endStr);
+      const title = encodeURIComponent(name + ' - Music Trial');
+      const ctz   = encodeURIComponent(calendar_timezone);
+      const googleCalendarUrl =
+        `https://www.google.com/calendar/render?action=TEMPLATE` +
+        `&text=${title}` +
+        `&dates=${startUTC}/${endUTC}` +
+        `&ctz=${ctz}`;
 
-    function formatGoogleDate(date) {
-      return date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
-    }
-    const startUTC = formatGoogleDate(startDate);
-    const endUTC = formatGoogleDate(endDate);
+      document.getElementById('calendar_link').value = googleCalendarUrl;
 
-    const eventTitle = name + ' - Music Trial';
-    const eventDescription = '';
-    const location = '';
-
-    const googleCalendarUrl =
-      `https://www.google.com/calendar/render?action=TEMPLATE` +
-      `&text=${encodeURIComponent(eventTitle)}` +
-      `&details=${encodeURIComponent(eventDescription)}` +
-      `&location=${encodeURIComponent(location)}` +
-      `&dates=${startUTC}/${endUTC}` +
-      `&ctz=${encodeURIComponent(calendar_timezone)}`;
-
-    document.getElementById('calendar_link').value = googleCalendarUrl;
-
-    // Log what will be sent to EmailJS
-    const emailData = {
-      name: name,
-      email: email,
-      date: calendar_date,
-      time: calendar_time,
-      timezone: calendar_timezone,
-      calendar_link: googleCalendarUrl
-    };
-    console.log("Sending to EmailJS:", emailData);
-
-    // Send to EmailJS
-    emailjs.send('service_s69ud1n', 'template_x8ylvsr', emailData)
-      .then(function(response) {
-        console.log("EmailJS success:", response);
+      // EmailJS
+      const emailData = {
+        name, email, phone, age, course,
+        previous_experience, country,
+        date: calendar_date, time: calendar_time,
+        timezone: calendar_timezone,
+        calendar_link: googleCalendarUrl
+      };
+      console.log("Sending to EmailJS:", emailData);
+      try {
+        await emailjs.send('service_s69ud1n','template_x8ylvsr', emailData);
+        console.log("EmailJS success");
         document.getElementById('success-modal').classList.remove('hidden');
         document.getElementById('calendar-link-modal-btn').href = googleCalendarUrl;
-      }, function(error) {
-        console.error("EmailJS error:", error);
-        alert('There was an error sending your email. Please try again.');
-      });
-  });
-</script>
+      } catch(err) {
+        console.error("EmailJS error:", err);
+        alert('Error sending email.');
+      }
+
+      // Supabase
+      const supabaseData = {
+        name, email, phone, age: Number(age), course,
+        previous_experience, country,
+        calendar_date, calendar_time, calendar_timezone,
+        calendar_link: googleCalendarUrl
+      };
+      console.log("Sending to Supabase:", supabaseData);
+      try {
+        const inserted = await window.saveRegistration(supabaseData);
+        console.log('✅ Supabase insert success:', inserted);
+      } catch(err) {
+        console.error('❌ Supabase registration error:', err);
+        alert('Error saving registration. Check console.');
+      }
+    });
+
+    // close modal
+    document.getElementById('close-success-modal')
+      .addEventListener('click', () =>
+        document.getElementById('success-modal').classList.add('hidden')
+      );
+  </script>
+
 </body>
 </html>
