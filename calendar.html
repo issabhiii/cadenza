@@ -141,6 +141,67 @@
             </div>
         </div>
     </div>
+     <style>
+    /* Calendar background pale white */
+    .calendar-container {
+      background-color: #fdfaf7; /* very pale ivory */
+    }
+
+    /* Day cells */
+    #calendar-days div {
+      background-color: #faf6f1; /* even paler */
+      color: #3c2a1e;           /* dark brown text */
+      border-radius: .25rem;
+      transition: background-color .2s;
+    }
+    #calendar-days div:hover {
+      background-color: #f4e8dc; /* light golden highlight */
+    }
+
+    /* Selected day */
+    #calendar-days div.bg-indigo-600 {
+      background-color: #D4AF37 !important; /* your gold */
+      color: #3c2a1e !important;
+    }
+
+    /* Time-slot cards */
+    .time-slot {
+      background-color: #faf6f1;
+      border-color: #D4AF37;
+      color: #3c2a1e;
+      transition: background-color .2s, transform .2s;
+    }
+    .time-slot:hover {
+      background-color: #f4e8dc;
+    }
+    .time-slot.selected {
+      background-color: #D4AF37;
+      color: #3c2a1e;
+      border-color: #D4AF37;
+      transform: scale(1.05);
+    }
+
+    /* Header & controls */
+    .calendar-container h2,
+    .calendar-container span,
+    .calendar-container button i {
+      color: #3c2a1e;
+    }
+    .calendar-container button {
+      background-color: transparent;
+      color: #3c2a1e;
+    }
+    .calendar-container button:hover {
+      background-color: #f4e8dc;
+    }
+
+    /* Dropdown */
+    #timezone-select {
+      background-color: #faf6f1;
+      border-color: #D4AF37;
+      color: #3c2a1e;
+    }
+  </style>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
