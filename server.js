@@ -1,120 +1,103 @@
-// server.js
+// supabaseClient.js
+(() => {
+  const SUPABASE_URL = 'https://xzydohefpyxsputkzawf.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6eWRvaGVmcHl4c3B1dGt6YXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzMTg1MTgsImV4cCI6MjA2OTg5NDUxOH0.iVwoNDL23MytEJGdAwM4UJGnozrDxhJ3qD1Vcjq1UUM';
 
-const express     = require('express');
-const bodyParser  = require('body-parser');
-const cors        = require('cors');
-const { createEvent } = require('ics');
-const nodemailer  = require('nodemailer');
-const { v4: uuidv4 } = require('uuid');
+  const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
-
-/** ── CONFIG ───────────────────────────────────────────────
- * Replace these with your Gmail address and app password.
- * (Generate an App Password in your Google Account settings.)
- */
-const EMAIL_USER = 'musicademy1@gmail.com';
-const EMAIL_PASS = 'mahaveer24';
-
-/** ── In-memory store of scheduled sessions ───────────────── */
-let sessions = [];
-
-/** ── Teacher: create a new session ──────────────────────── */
-app.post('/api/sessions', (req, res) => {
-  const { date, startTime, endTime } = req.body;
-  if (!date || !startTime || !endTime) {
-    return res.status(400).json({ error: 'Missing date, startTime, or endTime' });
-  }
-  const id = uuidv4();
-  sessions.push({ id, date, startTime, endTime });
-  res.json({ success: true, session: { id, date, startTime, endTime } });
-});
-
-/** ── Student: list all sessions or by date ──────────────── */
-app.get('/api/sessions', (req, res) => {
-  const { date } = req.query;
-  if (date) {
-    return res.json(sessions.filter(s => s.date === date));
-  }
-  res.json(sessions);
-});
-
-/** ── Student: register for a session & send .ics invites ─── */
-app.post('/api/register', async (req, res) => {
-  try {
-    const { sessionId, studentEmail } = req.body;
-    const session = sessions.find(s => s.id === sessionId);
-    if (!session) {
-      return res.status(404).json({ error: 'Session not found' });
+  window.createTeacherSlot = async function(payload) {
+    try {
+      console.log('Creating teacher slot:', payload);
+      const { data, error } = await client
+        .from('teacher_slots')
+        .insert([payload])
+        .select()
+        .single();
+      
+      if (error) {
+        console.error('Supabase createTeacherSlot error:', error);
+        throw error;
+      }
+      return data;
+    } catch (error) {
+      console.error('Error in createTeacherSlot:', error);
+      throw error;
     }
+  };
 
-    // Parse date/time into numbers
-    const [year, month, day] = session.date.split('-').map(Number);
-    const [h1, m1] = session.startTime.split(':').map(Number);
-    const [h2, m2] = session.endTime.split(':').map(Number);
-
-    // Build the ICS calendar invite
-    const { error: icsError, value: icsContent } = createEvent({
-      start:  [year, month, day, h1, m1],
-      end:    [year, month, day, h2, m2],
-      title:  'Class Session',
-      description: `Session on ${session.date} from ${session.startTime} to ${session.endTime}`,
-      status: 'CONFIRMED',
-      method: 'REQUEST',
-      attendees: [
-        {
-          name:  'Teacher',
-          email: 'abhispersonallol@gmail.com',
-          rsvp:  true,
-          partstat: 'ACCEPTED',
-          role: 'REQ-PARTICIPANT'
-        },
-        {
-          name:  'Student',
-          email: studentEmail,
-          rsvp:  true,
-          partstat: 'NEEDS-ACTION',
-          role: 'REQ-PARTICIPANT'
-        }
-      ]
-    });
-    if (icsError) throw new Error(icsError);
-
-    // Configure SMTP transporter
-    const transporter = nodemailer.createTransport({
-      host:   'smtp.gmail.com',
-      port:   465,
-      secure: true,
-      auth: {
-        user: EMAIL_USER,
-        pass: EMAIL_PASS
+  window.fetchTeacherSlots = async function(dateStr) {
+    try {
+      console.log('Fetching teacher slots for:', dateStr || 'all dates');
+      let query = client
+        .from('teacher_slots')
+        .select('*')
+        .order('start_time', { ascending: true });
+      
+      if (dateStr) {
+        query = query.eq('date', dateStr);
       }
-    });
-
-    // Send the email with .ics attachment
-    await transporter.sendMail({
-      from: EMAIL_USER,
-      to:   `${studentEmail},abhispersonallol@gmail.com`,
-      subject: 'Class Session Invitation',
-      text:    `You’re invited to a class on ${session.date} from ${session.startTime} to ${session.endTime}.`,
-      icalEvent: {
-        filename: 'invite.ics',
-        method:   'REQUEST',
-        content:  icsContent
+      
+      const { data, error } = await query;
+      
+      if (error) {
+        console.error('Supabase fetchTeacherSlots error:', error);
+        throw error;
       }
-    });
+      return data;
+    } catch (error) {
+      console.error('Error in fetchTeacherSlots:', error);
+      throw error;
+    }
+  };
 
-    res.json({ success: true });
-  } catch (err) {
-    console.error('Error in /api/register:', err);
-    res.status(500).json({ error: err.message });
-  }
-});
+  window.deleteTeacherSlot = async function(id) {
+    try {
+      console.log('Deleting teacher slot:', id);
+      const { error } = await client
+        .from('teacher_slots')
+        .delete()
+        .eq('id', id);
+      
+      if (error) {
+        console.error('Supabase deleteTeacherSlot error:', error);
+        throw error;
+      }
+      return true;
+    } catch (error) {
+      console.error('Error in deleteTeacherSlot:', error);
+      throw error;
+    }
+  };
 
-/** ── Start the server ───────────────────────────────────── */
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+  window.saveRegistration = async function(data) {
+    try {
+      console.log('Saving registration:', data);
+      const { data: inserted, error } = await client
+        .from('registrations')
+        .insert([{
+          name: data.name,
+          age: data.age,
+          email: data.email,
+          phone: data.phone,
+          course: data.course,
+          previous_experience: data.previous_experience,
+          country: data.country,
+          calendar_date: data.calendar_date,
+          calendar_time: data.calendar_time,
+          calendar_timezone: data.calendar_timezone,
+          calendar_link: data.calendar_link
+        }])
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Supabase saveRegistration error:', error);
+        throw error;
+      }
+      return inserted;
+    } catch (error) {
+      console.error('Error in saveRegistration:', error);
+      throw error;
+    }
+  };
+})();

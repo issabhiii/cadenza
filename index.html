@@ -398,106 +398,125 @@
       }
     });
 
-    const unifiedForm = document.getElementById('unifiedForm');
-    console.log("unifiedForm found:", !!unifiedForm);
-
     unifiedForm.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      console.log("Form submitted!");
+  e.preventDefault();
+  console.log("Form submitted!");
 
-      // Gather values
-      const name  = document.getElementById('reg_name').value.trim();
-      const email = document.getElementById('reg_email').value.trim();
-      const phone = document.getElementById('reg_phone').value.trim();
-      const age   = document.getElementById('reg_age').value.trim();
-      const course = document.getElementById('reg_course').value;
-      const previous_experience = document.getElementById('reg_experience').value.trim();
-      const country = document.getElementById('reg_country').value.trim();
+  // Gather values
+  const name  = document.getElementById('reg_name').value.trim();
+  const email = document.getElementById('reg_email').value.trim();
+  const phone = document.getElementById('reg_phone').value.trim();
+  const age   = document.getElementById('reg_age').value.trim();
+  const course = document.getElementById('reg_course').value;
+  const previous_experience = document.getElementById('reg_experience').value.trim();
+  const country = document.getElementById('reg_country').value.trim();
 
-      const calendar_date     = document.getElementById('calendar_date').value.trim();
-      const calendar_time     = document.getElementById('calendar_time').value.trim();
-      const calendar_timezone = document.getElementById('calendar_timezone').value.trim();
+  const calendar_date     = document.getElementById('calendar_date').value.trim();
+  const calendar_time     = document.getElementById('calendar_time').value.trim();
+  const calendar_timezone = document.getElementById('calendar_timezone').value.trim();
 
-      // Missing-fields check
-      const missing = [];
-      if (!name)                missing.push('Name');
-      if (!email)               missing.push('Email');
-      if (!phone)               missing.push('Phone');
-      if (!age)                 missing.push('Age');
-      if (!course)              missing.push('Course');
-      if (!previous_experience) missing.push('Previous experience');
-      if (!country)             missing.push('Country');
-      if (!calendar_date)       missing.push('Selected date');
-      if (!calendar_time)       missing.push('Selected time');
-      if (!calendar_timezone)   missing.push('Timezone');
+  // 🔥 Log values for debugging
+  console.log('calendar_time:', calendar_time);
+  console.log('calendar_date:', calendar_date);
+  console.log('calendar_timezone:', calendar_timezone);
 
-      if (missing.length) {
-        console.warn('Missing fields:', missing);
-        return alert(
-          'Please fill out the following fields:\n• ' + missing.join('\n• ')
-        );
-      }
+  // Missing-fields check
+  const missing = [];
+  if (!name)                missing.push('Name');
+  if (!email)               missing.push('Email');
+  if (!phone)               missing.push('Phone');
+  if (!age)                 missing.push('Age');
+  if (!course)              missing.push('Course');
+  if (!previous_experience) missing.push('Previous experience');
+  if (!country)             missing.push('Country');
+  if (!calendar_date)       missing.push('Selected date');
+  if (!calendar_time)       missing.push('Selected time');
+  if (!calendar_timezone)   missing.push('Timezone');
 
-      // Generate Google Calendar link
-      const [startStr, endStr] = calendar_time.split(' - ');
-      const parseTime = (date, timeStr) => {
-        const [time, mod] = timeStr.split(' ');
-        let [h, m] = time.split(':').map(Number);
-        if (mod==='PM'&&h<12) h+=12;
-        if (mod==='AM'&&h===12) h=0;
-        const d = new Date(date);
-        d.setHours(h, m,0,0);
-        return d.toISOString()
-                .replace(/[-:]/g,'')
-                .replace(/\.\d{3}Z$/,'Z');
-      };
-      const startUTC = parseTime(calendar_date, startStr);
-      const endUTC   = parseTime(calendar_date, endStr);
-      const title = encodeURIComponent(name + ' - Music Trial');
-      const ctz   = encodeURIComponent(calendar_timezone);
-      const googleCalendarUrl =
-        `https://www.google.com/calendar/render?action=TEMPLATE` +
-        `&text=${title}` +
-        `&dates=${startUTC}/${endUTC}` +
-        `&ctz=${ctz}`;
+  if (missing.length) {
+    console.warn('Missing fields:', missing);
+    alert(
+      'Please fill out the following fields:\n• ' + missing.join('\n• ')
+    );
+    return;
+  }
 
-      document.getElementById('calendar_link').value = googleCalendarUrl;
+  // 🔒 Require time slot selection before parsing
+  if (!calendar_time) {
+    alert("Please select a time slot from the calendar before submitting.");
+    return;
+  }
 
-      // EmailJS
-      const emailData = {
-        name, email, phone, age, course,
-        previous_experience, country,
-        date: calendar_date, time: calendar_time,
-        timezone: calendar_timezone,
-        calendar_link: googleCalendarUrl
-      };
-      console.log("Sending to EmailJS:", emailData);
-      try {
-        await emailjs.send('service_s69ud1n','template_x8ylvsr', emailData);
-        console.log("EmailJS success");
-        document.getElementById('success-modal').classList.remove('hidden');
-        document.getElementById('calendar-link-modal-btn').href = googleCalendarUrl;
-      } catch(err) {
-        console.error("EmailJS error:", err);
-        alert('Error sending email.');
-      }
+  // 💥 Split on en dash (–) first, fallback to hyphen (-)
+  let [startStr, endStr] = calendar_time.split(' – ');
+  if (!endStr) {
+    [startStr, endStr] = calendar_time.split(' - ');
+  }
+  if (!endStr) {
+    alert("Could not parse the time slot: " + calendar_time);
+    return;
+  }
 
-      // Supabase
-      const supabaseData = {
-        name, email, phone, age: Number(age), course,
-        previous_experience, country,
-        calendar_date, calendar_time, calendar_timezone,
-        calendar_link: googleCalendarUrl
-      };
-      console.log("Sending to Supabase:", supabaseData);
-      try {
-        const inserted = await window.saveRegistration(supabaseData);
-        console.log('✅ Supabase insert success:', inserted);
-      } catch(err) {
-        console.error('❌ Supabase registration error:', err);
-        alert('Error saving registration. Check console.');
-      }
-    });
+  // Build Google Calendar link
+  const parseTime = (date, timeStr) => {
+    const [time, mod] = timeStr.split(' ');
+    let [h, m] = time.split(':').map(Number);
+    if (mod === 'PM' && h < 12) h += 12;
+    if (mod === 'AM' && h === 12) h = 0;
+    const d = new Date(date);
+    d.setHours(h, m, 0, 0);
+    return d.toISOString()
+            .replace(/[-:]/g, '')
+            .replace(/\.\d{3}Z$/, 'Z');
+  };
+  const startUTC = parseTime(calendar_date, startStr);
+  const endUTC   = parseTime(calendar_date, endStr);
+  const title = encodeURIComponent(name + ' - Music Trial');
+  const ctz   = encodeURIComponent(calendar_timezone);
+  const googleCalendarUrl =
+    `https://www.google.com/calendar/render?action=TEMPLATE` +
+    `&text=${title}` +
+    `&dates=${startUTC}/${endUTC}` +
+    `&ctz=${ctz}`;
+
+  document.getElementById('calendar_link').value = googleCalendarUrl;
+
+  // EmailJS
+  const emailData = {
+    name, email, phone, age, course,
+    previous_experience, country,
+    date: calendar_date, time: calendar_time,
+    timezone: calendar_timezone,
+    calendar_link: googleCalendarUrl
+  };
+  console.log("Sending to EmailJS:", emailData);
+  try {
+    await emailjs.send('service_s69ud1n','template_x8ylvsr', emailData);
+    console.log("EmailJS success");
+    document.getElementById('success-modal').classList.remove('hidden');
+    document.getElementById('calendar-link-modal-btn').href = googleCalendarUrl;
+  } catch(err) {
+    console.error("EmailJS error:", err);
+    alert('Error sending email.');
+  }
+
+  // Supabase
+  const supabaseData = {
+    name, email, phone, age: Number(age), course,
+    previous_experience, country,
+    calendar_date, calendar_time, calendar_timezone,
+    calendar_link: googleCalendarUrl
+  };
+  console.log("Sending to Supabase:", supabaseData);
+  try {
+    const inserted = await window.saveRegistration(supabaseData);
+    console.log('✅ Supabase insert success:', inserted);
+  } catch(err) {
+    console.error('❌ Supabase registration error:', err);
+    alert('Error saving registration. Check console.');
+  }
+});
+
 
     // close modal
     document.getElementById('close-success-modal')
