@@ -273,10 +273,12 @@
       </div>
     </div>
   </section>
-  <!-- Contact & Scheduler Section -->
+<!-- Contact & Scheduler Section -->
 <section id="contact" class="py-16 hero-gradient text-[#F4EDE4]">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col md:flex-row gap-8 text-[#3C2A1E]">
+    <!-- GOLD TITLE above both -->
+    <h2 class="text-3xl font-extrabold text-center mb-8" style="color: #D4AF37;">Pick a Time Slot</h2>
+    <div class="bg-white rounded-xl shadow-lg p-16 flex flex-col md:flex-row gap-8 text-[#3C2A1E]">
       <!-- Unified Form -->
       <form id="unifiedForm" class="w-full md:w-1/2 space-y-4 flex flex-col justify-between">
         <!-- Hidden fields to store calendar info -->
@@ -335,14 +337,11 @@
           <option value="Other">
         </datalist>
         <!-- Registration fields END here -->
-
-        <button type="submit" id="schedule-btn" class="w-full bg-[#D4AF37] hover:bg-yellow-400 text-black px-6 py-3 rounded-md font-semibold transition text-lg mt-4">
-          Schedule Your Class Now!
-        </button>
+        <!-- The button has been moved out, so remove it here -->
       </form>
       <!-- Calendar Scheduler -->
       <div class="w-full md:w-1/2">
-        <h2 class="text-2xl font-bold mb-4 text-[#3C2A1E]">Pick a Time Slot</h2>
+        <!-- Remove the old <h2> Pick a Time Slot ... -->
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
           <iframe
             id="calendar-iframe"
@@ -352,6 +351,14 @@
           </iframe>
         </div>
       </div>
+    </div>
+    <!-- Button below both, centered -->
+    <div class="flex justify-center mt-8">
+      <button type="submit" form="unifiedForm"
+        id="schedule-btn"
+        class="bg-[#D4AF37] hover:bg-yellow-400 text-black px-8 py-4 rounded-md font-semibold transition text-xl shadow-lg">
+        Schedule Your Class Now!
+      </button>
     </div>
   </div>
 </section>

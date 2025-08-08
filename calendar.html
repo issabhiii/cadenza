@@ -73,14 +73,14 @@
   </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
-  <!-- (All your HTML remains the same) -->
+  <!-- (All your HTML remains the same)
   <div class="container mx-auto px-4 py-8">
-    <!-- Toggle & Add Slot -->
+    Toggle & Add Slot -->
     <div class="flex justify-center items-center gap-4 mb-6">
-      <button id="switch-view-btn"
+      <!-- <button id="switch-view-btn"
         class="px-4 py-2 bg-indigo-600 text-white rounded font-semibold hover:bg-indigo-700 transition">
         Switch to Teacher View
-      </button>
+      </button> -->
       <button id="add-teacher-slot-btn"
         class="px-4 py-2 bg-green-600 text-white rounded font-semibold hover:bg-green-700 transition hidden">
         Add Teacher Slot
@@ -462,13 +462,13 @@
         showTimeSlots(); 
       };
 
-      switchViewBtn.onclick = () => {
-        isTeacherView = !isTeacherView;
-        console.log('View switched to:', isTeacherView ? 'Teacher' : 'Student');
-        switchViewBtn.textContent = isTeacherView ? 'Switch to Student View' : 'Switch to Teacher View';
-        addTeacherSlotBtn.classList.toggle('hidden', !isTeacherView);
-        showTimeSlots();
-      };
+      // switchViewBtn.onclick = () => {
+      //   isTeacherView = !isTeacherView;
+      //   console.log('View switched to:', isTeacherView ? 'Teacher' : 'Student');
+      //   switchViewBtn.textContent = isTeacherView ? 'Switch to Student View' : 'Switch to Teacher View';
+      //   addTeacherSlotBtn.classList.toggle('hidden', !isTeacherView);
+      //   showTimeSlots();
+      // };
 
       addTeacherSlotBtn.onclick = () => {
         console.log('Add teacher slot button clicked');

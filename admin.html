@@ -22,6 +22,27 @@
     }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    /* Sticky footer on mobile */
+    .sticky-footer {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      width: 100vw;
+      background: #F4EDE4;
+      z-index: 40;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem 0 1.5rem 0;
+    }
+    @media (min-width: 640px) {
+      .sticky-footer {
+        position: static;
+        width: auto;
+        background: none;
+        padding: 0;
+        justify-content: flex-end;
+      }
+    }
   </style>
 </head>
 <body class="min-h-screen font-sans flex flex-col">
@@ -95,95 +116,109 @@
         </div>
       </div>
     </section>
-    <button id="logout-btn" class="mt-auto gold-bg text-black px-5 py-2 rounded-md font-semibold shadow hover:bg-yellow-400 transition w-full max-w-xs">
-      Logout
-    </button>
+
+    <!-- Centered Teacher Slots -->
+    <section id="teacher-slots-section" class="w-full max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-4 sm:p-6 mb-8 mt-8 flex flex-col items-center">
+      <div class="flex flex-col sm:flex-row items-center justify-between mb-4 gap-2 w-full">
+        <h2 class="text-lg sm:text-xl font-bold text-[#3C2A1E]">Teacher Slots</h2>
+        <button id="add-teacher-slot-btn" class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 w-full sm:w-auto">Add Teacher Slot</button>
+      </div>
+      <div id="calendar-admin-wrapper" class="overflow-x-auto w-full flex justify-center">
+        <div class="calendar-container p-4 border rounded-lg w-full max-w-2xl">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="font-semibold text-[#3C2A1E]">Slot Calendar</h3>
+            <div class="flex items-center gap-2">
+              <button id="prev-month" class="p-2 hover:bg-gray-100 rounded-full">
+                <i class="fas fa-chevron-left text-gray-600"></i>
+              </button>
+              <span id="current-month-year" class="font-medium text-gray-700"></span>
+              <button id="next-month" class="p-2 hover:bg-gray-100 rounded-full">
+                <i class="fas fa-chevron-right text-gray-600"></i>
+              </button>
+            </div>
+          </div>
+          <div class="mb-4 grid grid-cols-7 text-gray-500 text-xs sm:text-sm">
+            <div class="w-10 h-10 flex items-center justify-center">Sun</div>
+            <div class="w-10 h-10 flex items-center justify-center">Mon</div>
+            <div class="w-10 h-10 flex items-center justify-center">Tue</div>
+            <div class="w-10 h-10 flex items-center justify-center">Wed</div>
+            <div class="w-10 h-10 flex items-center justify-center">Thu</div>
+            <div class="w-10 h-10 flex items-center justify-center">Fri</div>
+            <div class="w-10 h-10 flex items-center justify-center">Sat</div>
+          </div>
+          <div id="calendar-days" class="grid grid-cols-7 gap-1"></div>
+          <div class="mt-4">
+            <h4 class="text-[#3C2A1E] font-medium mb-1">Slots for <span id="selected-date-text">Select a date</span></h4>
+            <div id="time-slots" class="time-slots-container w-full">
+              <div class="grid gap-3"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <script src="adminpanel.js"></script>
-  <!-- Teacher Slots Section (Teacher Calendar) -->
-<section id="teacher-slots-section" class="w-full max-w-4xl bg-white rounded-xl shadow-lg p-4 sm:p-6 mb-8 mt-8">
-  <div class="flex flex-col sm:flex-row items-center justify-between mb-4 gap-2">
-    <h2 class="text-lg sm:text-xl font-bold text-[#3C2A1E]">Teacher Slots</h2>
-    <button id="add-teacher-slot-btn" class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 w-full sm:w-auto">Add Teacher Slot</button>
+  <!-- Sticky Footer for buttons -->
+  <div class="sticky-footer">
+    <button id="back-main-btn" class="gold-bg text-black px-5 py-2 rounded-md font-semibold shadow hover:bg-yellow-400 transition">
+      Back to Main Website
+    </button>
+    <button id="logout-btn" class="gold-bg text-black px-5 py-2 rounded-md font-semibold shadow hover:bg-yellow-400 transition">
+      Logout
+    </button>
   </div>
-  <div id="calendar-admin-wrapper" class="overflow-x-auto">
-    <div class="calendar-container p-4 border rounded-lg">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="font-semibold text-[#3C2A1E]">Slot Calendar</h3>
-        <div class="flex items-center gap-2">
-          <button id="prev-month" class="p-2 hover:bg-gray-100 rounded-full">
-            <i class="fas fa-chevron-left text-gray-600"></i>
-          </button>
-          <span id="current-month-year" class="font-medium text-gray-700"></span>
-          <button id="next-month" class="p-2 hover:bg-gray-100 rounded-full">
-            <i class="fas fa-chevron-right text-gray-600"></i>
-          </button>
-        </div>
-      </div>
-      <div class="mb-4 grid grid-cols-7 text-gray-500 text-xs sm:text-sm">
-        <div class="w-10 h-10 flex items-center justify-center">Sun</div>
-        <div class="w-10 h-10 flex items-center justify-center">Mon</div>
-        <div class="w-10 h-10 flex items-center justify-center">Tue</div>
-        <div class="w-10 h-10 flex items-center justify-center">Wed</div>
-        <div class="w-10 h-10 flex items-center justify-center">Thu</div>
-        <div class="w-10 h-10 flex items-center justify-center">Fri</div>
-        <div class="w-10 h-10 flex items-center justify-center">Sat</div>
-      </div>
-      <div id="calendar-days" class="grid grid-cols-7 gap-1"></div>
-      <div class="mt-4">
-        <h4 class="text-[#3C2A1E] font-medium mb-1">Slots for <span id="selected-date-text">Select a date</span></h4>
-        <div id="time-slots" class="time-slots-container w-full">
-          <div class="grid gap-3"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- Teacher Slot Modal -->
-<div id="teacher-slot-modal"
-  class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
-  <div class="bg-white rounded-lg p-6 max-w-sm w-full mx-4">
-    <h3 class="text-lg font-medium text-gray-900 mb-4">Add Available Slot</h3>
-    <div class="space-y-4">
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Teacher Name</label>
-        <input
-          type="text" id="teacher-name"
-          class="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3"
-          placeholder="Your Name" required/>
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Date</label>
-        <input type="date" id="teacher-slot-date"
-          class="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3"/>
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Start Time</label>
-        <input type="time" id="teacher-slot-start"
-          class="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3"/>
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700">End Time</label>
-        <input type="time" id="teacher-slot-end"
-          class="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3"/>
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Timezone</label>
-        <select id="teacher-slot-tz"
-          class="block w-full border border-gray-300 rounded-md py-2 px-3"></select>
-      </div>
-      <div class="flex justify-end gap-2">
-        <button id="teacher-slot-cancel" class="px-4 py-2 bg-gray-200 rounded-md">
-          Cancel
-        </button>
-        <button id="teacher-slot-save" class="px-4 py-2 bg-indigo-600 text-white rounded-md">
-          Save
-        </button>
+  <!-- Teacher Slot Modal -->
+  <div id="teacher-slot-modal"
+    class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
+    <div class="bg-white rounded-lg p-6 max-w-sm w-full mx-4">
+      <h3 class="text-lg font-medium text-gray-900 mb-4">Add Available Slot</h3>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Teacher Name</label>
+          <input
+            type="text" id="teacher-name"
+            class="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3"
+            placeholder="Your Name" required/>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Date</label>
+          <input type="date" id="teacher-slot-date"
+            class="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3"/>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Start Time</label>
+          <input type="time" id="teacher-slot-start"
+            class="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3"/>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">End Time</label>
+          <input type="time" id="teacher-slot-end"
+            class="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3"/>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Timezone</label>
+          <select id="teacher-slot-tz"
+            class="block w-full border border-gray-300 rounded-md py-2 px-3"></select>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button id="teacher-slot-cancel" class="px-4 py-2 bg-gray-200 rounded-md">
+            Cancel
+          </button>
+          <button id="teacher-slot-save" class="px-4 py-2 bg-indigo-600 text-white rounded-md">
+            Save
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+
+  <script src="adminpanel.js"></script>
+  <script>
+    // "Back to Main Website" button
+    document.getElementById('back-main-btn').onclick = function() {
+      window.location.href = 'index.html';
+    }
+  </script>
 </body>
 </html>
