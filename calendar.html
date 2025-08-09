@@ -14,10 +14,12 @@
   
   <!-- Supabase JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- server.js must expose: createTeacherSlot, fetchTeacherSlots, deleteTeacherSlot, fetchBookedForSlot -->
   <script src="server.js"></script>
 
   <style>
-    /* (All your existing styles remain the same) */
+    html, body { height: 100%; }
     .calendar-container { background: #fdfaf7; }
     #calendar-days div {
       background: #faf6f1; color: #3c2a1e; border-radius: .25rem;
@@ -30,57 +32,41 @@
     .time-slot {
       background: #faf6f1; border-color: #D4AF37; color: #3c2a1e;
       transition: background .2s, transform .2s;
+      padding: 0.9rem 1rem;
+      font-size: 1rem;
     }
-    .time-slot:hover { background: #f4e8dc; }
+    .time-slot:hover { background: #f4e8dc; transform: scale(1.02); }
     .time-slot.selected {
       background: #D4AF37; color: #3c2a1e; transform: scale(1.05);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
     }
-    .calendar-container {
-      transition: all 0.3s ease;
-    }
+    .calendar-container { transition: all 0.3s ease; }
     .time-slots-container {
       transition: all 0.3s ease;
       opacity: 0;
       max-height: 0;
       overflow: hidden;
     }
-    .time-slots-container.show {
-      opacity: 1;
-      max-height: 1000px;
-    }
-    .time-slot {
-      transition: all 0.2s ease;
-    }
-    .time-slot:hover {
-      transform: scale(1.02);
-    }
-    .time-slot.selected {
-      transform: scale(1.05);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    }
+    .time-slots-container.show { opacity: 1; max-height: 1000px; }
     @media (max-width: 768px) {
-      .calendar-layout {
-        flex-direction: column;
-      }
-      .time-slots-container.show {
-        max-height: 500px;
-      }
+      .calendar-layout { flex-direction: column; }
+      .time-slots-container.show { max-height: 500px; }
     }
-    #time-slots > div {
-      max-height: 400px;
-      overflow-y: auto;
-    }
+    /* Taller list for desktop */
+    #time-slots > div { max-height: 600px; overflow-y: auto; }
   </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
-  <!-- (All your HTML remains the same)
   <div class="container mx-auto px-4 py-8">
-    Toggle & Add Slot -->
+    <!-- Toggle & Add Slot -->
     <div class="flex justify-center items-center gap-4 mb-6">
-      <!-- <button id="switch-view-btn"
+      <!-- Optional: add a toggle if you want to switch views -->
+      <!--
+      <button id="switch-view-btn"
         class="px-4 py-2 bg-indigo-600 text-white rounded font-semibold hover:bg-indigo-700 transition">
         Switch to Teacher View
-      </button> -->
+      </button>
+      -->
       <button id="add-teacher-slot-btn"
         class="px-4 py-2 bg-green-600 text-white rounded font-semibold hover:bg-green-700 transition hidden">
         Add Teacher Slot
@@ -150,13 +136,13 @@
           </div>
         </div>
         <div class="mb-4 grid grid-cols-7 text-gray-500 text-sm">
-          <div class="w-10 h-10 flex items-center justify-center">Sun</div>
-          <div class="w-10 h-10 flex items-center justify-center">Mon</div>
-          <div class="w-10 h-10 flex items-center justify-center">Tue</div>
-          <div class="w-10 h-10 flex items-center justify-center">Wed</div>
-          <div class="w-10 h-10 flex items-center justify-center">Thu</div>
-          <div class="w-10 h-10 flex items-center justify-center">Fri</div>
-          <div class="w-10 h-10 flex items-center justify-center">Sat</div>
+          <div class="w-14 h-14 flex items-center justify-center">Sun</div>
+          <div class="w-14 h-14 flex items-center justify-center">Mon</div>
+          <div class="w-14 h-14 flex items-center justify-center">Tue</div>
+          <div class="w-14 h-14 flex items-center justify-center">Wed</div>
+          <div class="w-14 h-14 flex items-center justify-center">Thu</div>
+          <div class="w-14 h-14 flex items-center justify-center">Fri</div>
+          <div class="w-14 h-14 flex items-center justify-center">Sat</div>
         </div>
         <div id="calendar-days" class="grid grid-cols-7 gap-1"></div>
         <div class="mt-6">
@@ -181,17 +167,15 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      console.log('DOM fully loaded and parsed');
-      
+      console.log('[calendar.html] DOM ready');
+
       // --- State & DOM refs ---
       let currentDate = new Date();
-      console.log('Initial currentDate:', currentDate);
-      
       let selectedDate = null;
-      let isTeacherView = false;
+      let isTeacherView = false; // toggleable if you want
       let teacherSlots = [];
       let userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      console.log('Detected user timezone:', userTimezone);
+      console.log('[calendar.html] Detected user timezone:', userTimezone);
 
       const calendarDays = document.getElementById('calendar-days');
       const currentMonthYear = document.getElementById('current-month-year');
@@ -200,7 +184,6 @@
       const timezoneSelect = document.getElementById('timezone-select');
       const selectedDateText = document.getElementById('selected-date-text');
       const timeSlotsContainer = document.getElementById('time-slots');
-      const switchViewBtn = document.getElementById('switch-view-btn');
       const addTeacherSlotBtn = document.getElementById('add-teacher-slot-btn');
       const teacherSlotModal = document.getElementById('teacher-slot-modal');
       const teacherNameInput = document.getElementById('teacher-name');
@@ -212,8 +195,7 @@
       const teacherSlotSave = document.getElementById('teacher-slot-save');
 
       const { DateTime } = luxon;
-      console.log('Luxon DateTime loaded:', DateTime);
-      
+
       const popularTimezones = [
         "Asia/Kolkata","Asia/Dubai","Asia/Singapore","Asia/Tokyo",
         "Europe/London","Europe/Berlin","Europe/Paris","Europe/Moscow",
@@ -223,21 +205,17 @@
 
       // ── Calendar Rendering ───────────────────────────────────
       function renderCalendar() {
-        console.log('Rendering calendar for:', currentDate);
-        
+        console.log('[calendar.html] renderCalendar for', currentDate);
         calendarDays.innerHTML = '';
         const y = currentDate.getFullYear();
         const m = currentDate.getMonth();
-        
+
         currentMonthYear.textContent = new Date(y,m,1)
           .toLocaleDateString('en-US',{month:'long',year:'numeric'});
-        console.log('Month/year display:', currentMonthYear.textContent);
-        
+
         const firstDay = new Date(y,m,1).getDay();
         const daysInMonth = new Date(y,m+1,0).getDate();
         const prevMonthDays = new Date(y,m,0).getDate();
-        
-        console.log(`Calendar details - First day: ${firstDay}, Days in month: ${daysInMonth}, Prev month days: ${prevMonthDays}`);
 
         // prev month
         for(let i=0;i<firstDay;i++){
@@ -246,27 +224,21 @@
           el.classList.add('text-gray-400');
           calendarDays.appendChild(el);
         }
-        
         // this month
         for(let d=1; d<=daysInMonth; d++){
           const el = createDayElement(d);
           const today = new Date();
           if(y===today.getFullYear() && m===today.getMonth() && d===today.getDate()){
-            console.log('Highlighting today:', d);
             el.classList.add('bg-indigo-100','font-semibold');
           }
           if(selectedDate && y===selectedDate.getFullYear() && m===selectedDate.getMonth() && d===selectedDate.getDate()){
-            console.log('Highlighting selected date:', d);
             el.classList.add('bg-indigo-600','text-white');
           }
           calendarDays.appendChild(el);
         }
-        
-        // next month
+        // next month fillers
         const total = firstDay+daysInMonth;
         const rem = (7 - total%7)%7;
-        console.log(`Adding ${rem} days from next month`);
-        
         for(let i=1;i<=rem;i++){
           const el = createDayElement(i);
           el.classList.add('text-gray-400');
@@ -275,32 +247,28 @@
       }
 
       function createDayElement(day) {
-        console.log('Creating day element:', day);
         const el = document.createElement('div');
-        el.className = 'w-10 h-10 flex items-center justify-center text-sm font-medium rounded-full cursor-pointer hover:bg-gray-100';
+        el.className = 'w-14 h-14 flex items-center justify-center text-base font-medium rounded-full cursor-pointer hover:bg-gray-100';
         el.textContent = day;
         el.addEventListener('click', async () => {
           const y = currentDate.getFullYear();
           const m = currentDate.getMonth();
-          
+
           // skip out-of-month days
           if(el.classList.contains('text-gray-400')) {
-            console.log('Clicked out-of-month day, ignoring');
+            console.log('[calendar.html] clicked out-of-month day, ignore');
             return;
           }
-          
+
           selectedDate = new Date(y,m,day);
-          console.log('Date selected:', selectedDate);
-          
-          // fetch live slots - FIXED DATE FORMAT HERE
           const dateStr = formatLocalDate(selectedDate);
-          console.log('Fetching slots for date:', dateStr);
-          
+          console.log('[calendar.html] selected date:', selectedDate, '=>', dateStr);
+
           try {
             teacherSlots = await fetchTeacherSlots(dateStr);
-            console.log('Fetched teacher slots:', teacherSlots);
+            console.log('[calendar.html] fetched teacher slots:', teacherSlots);
           } catch(e){
-            console.error('Error fetching teacher slots:', e);
+            console.error('[calendar.html] fetchTeacherSlots error:', e);
             teacherSlots = [];
           }
           renderCalendar();
@@ -309,14 +277,13 @@
         return el;
       }
 
-      // Helper function to format dates correctly (FIX FOR DATE OFFSET)
       function formatLocalDate(date) {
         return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
       }
 
       // ── Populate Timezones ───────────────────────────────────
       function populateTimezones() {
-        console.log('Populating timezone dropdown');
+        console.log('[calendar.html] populateTimezones');
         timezoneSelect.innerHTML = '';
         popularTimezones.forEach(tz=>{
           const o = document.createElement('option');
@@ -331,11 +298,10 @@
           o.textContent=userTimezone+' (detected)';
           timezoneSelect.insertBefore(o, timezoneSelect.firstChild);
         }
-        console.log('Timezone dropdown populated with:', timezoneSelect.innerHTML);
       }
       
       function populateTeacherTz(){
-        console.log('Populating teacher timezone dropdown');
+        console.log('[calendar.html] populateTeacherTz');
         teacherSlotTz.innerHTML = '';
         popularTimezones.forEach(tz=>{
           const o = document.createElement('option');
@@ -346,33 +312,26 @@
         });
       }
 
-      // ── Show Time Slots ───────────────────────────────────────
-      function showTimeSlots() {
-        console.log('Showing time slots, isTeacherView:', isTeacherView);
-        
+      // ── Show Time Slots (student + teacher) ──────────────────
+      async function showTimeSlots() {
+        console.log('[calendar.html] showTimeSlots, isTeacherView:', isTeacherView);
         if(!selectedDate) {
-          console.log('No date selected, skipping');
+          console.log('[calendar.html] no selectedDate, return');
           return;
         }
-        
-        // FIXED DATE FORMAT HERE
+
         const dateStr = formatLocalDate(selectedDate);
         selectedDateText.textContent = selectedDate
           .toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
-        
-        console.log('Selected date text:', selectedDateText.textContent);
-        
+
         const grid = document.querySelector('#time-slots > div');
         grid.innerHTML = '';
 
         if(isTeacherView) {
-          console.log('Rendering teacher view slots');
-          
+          console.log('[calendar.html] teacher view render');
           if(!teacherSlots.length){
-            console.log('No teacher slots found for this date');
             grid.innerHTML = '<div class="text-gray-500">No slots for this date.</div>';
           } else {
-            console.log('Rendering', teacherSlots.length, 'teacher slots');
             teacherSlots.forEach(slot => {
               const div = document.createElement('div');
               div.className = 'flex justify-between items-center bg-indigo-100 border border-indigo-300 rounded-md p-3 mb-2';
@@ -383,14 +342,13 @@
                 <button data-id="${slot.id}" class="text-red-600 hover:text-red-800">Delete</button>
               `;
               div.querySelector('button').onclick = async e => {
-                console.log('Delete button clicked for slot:', slot.id);
+                console.log('[calendar.html] delete slot clicked:', slot.id);
                 try {
                   await deleteTeacherSlot(slot.id);
                   teacherSlots = teacherSlots.filter(s=>s.id!==slot.id);
-                  console.log('Slot deleted, remaining slots:', teacherSlots);
                   showTimeSlots();
                 } catch(err) {
-                  console.error('Delete failed:', err);
+                  console.error('[calendar.html] deleteTeacherSlot error:', err);
                   alert('Delete failed: '+err.message);
                 }
               };
@@ -401,77 +359,93 @@
           return;
         }
 
-        // student view: show hourly breakdown for single slot
-        if(teacherSlots.length){
-          console.log('Rendering student view slots');
-          const s = teacherSlots[0];
-          console.log('First teacher slot:', s);
-          
-          let start = DateTime.fromISO(`${s.date}T${s.start_time}`, {zone:s.timezone})
-                        .setZone(userTimezone);
-          const end = DateTime.fromISO(`${s.date}T${s.end_time}`, {zone:s.timezone})
-                        .setZone(userTimezone);
-          
-          console.log('Start time (converted):', start.toString());
-          console.log('End time (converted):', end.toString());
-          
-          while(start < end){
-            const next = start.plus({hours:1})<end ? start.plus({hours:1}) : end;
-            const btn = document.createElement('button');
-            btn.className = 'time-slot border rounded-md p-3';
-            btn.textContent = `${start.toFormat('hh:mm a')} – ${next.toFormat('hh:mm a')}`;
-            btn.onclick = () => {
-              console.log('Time slot selected:', btn.textContent);
-              document.querySelectorAll('.time-slot')
-                .forEach(el=>el.classList.remove('selected'));
-              btn.classList.add('selected');
-              // propagate selection...
-              window.parent.postMessage({
-                type:'calendar-info',
-                date:s.date,
-                time:btn.textContent,
-                timezone:userTimezone
-              },'*');
-            };
-            grid.appendChild(btn);
+        // ───────── Student view with booked filtering ─────────
+        if (teacherSlots.length) {
+          console.log('[calendar.html] student view render');
+          const s = teacherSlots[0]; // current UI uses the first slot
+          console.log('[calendar.html] slot chosen for student view:', s);
+
+          // fetch booked rows for this slot/date
+          let booked = [];
+          try {
+            booked = await window.fetchBookedForSlot(s.id, s.date);
+            console.log('[calendar.html] booked rows (by slot/date):', booked);
+          } catch (err) {
+            console.error('[calendar.html] fetchBookedForSlot error:', err);
+          }
+
+          const { DateTime } = luxon;
+
+          // normalize booked intervals into user's timezone
+          const bookedIntervals = booked.map(b => {
+            const bs = DateTime.fromISO(`${b.date}T${b.start_time}`, { zone: b.timezone }).setZone(userTimezone);
+            const be = DateTime.fromISO(`${b.date}T${b.end_time}`,   { zone: b.timezone }).setZone(userTimezone);
+            return { start: bs, end: be };
+          });
+          console.log('[calendar.html] normalized booked intervals:', bookedIntervals);
+
+          function overlapsAny(aStart, aEnd) {
+            return bookedIntervals.some(({start, end}) => aStart < end && aEnd > start);
+          }
+
+          let start = DateTime.fromISO(`${s.date}T${s.start_time}`, { zone: s.timezone }).setZone(userTimezone);
+          const end = DateTime.fromISO(`${s.date}T${s.end_time}`,   { zone: s.timezone }).setZone(userTimezone);
+          console.log('[calendar.html] user-range:', start.toISO(), '=>', end.toISO(), 'tz:', userTimezone);
+
+          while (start < end) {
+            const next = start.plus({ hours: 1 }) < end ? start.plus({ hours: 1 }) : end;
+
+            if (!overlapsAny(start, next)) {
+              const btn = document.createElement('button');
+              btn.className = 'time-slot border rounded-md p-3';
+              btn.textContent = `${start.toFormat('hh:mm a')} – ${next.toFormat('hh:mm a')}`;
+              btn.onclick = () => {
+                console.log('[calendar.html] selected time label:', btn.textContent);
+                document.querySelectorAll('.time-slot').forEach(el => el.classList.remove('selected'));
+                btn.classList.add('selected');
+
+                window.parent.postMessage({
+                  type: 'calendar-info',
+                  slot_id: s.id,
+                  date: s.date,
+                  time: btn.textContent,
+                  timezone: userTimezone
+                }, '*');
+              };
+              grid.appendChild(btn);
+            } else {
+              console.log('[calendar.html] SKIP booked block:', start.toFormat('hh:mm a'), '–', next.toFormat('hh:mm a'));
+            }
+
             start = next;
           }
+
+          timeSlotsContainer.classList.add('show');
         } else {
-          console.log('No teacher slots available for student view');
+          console.log('[calendar.html] no teacher slots for this date');
           grid.innerHTML = '<div class="text-gray-500">No classes scheduled.</div>';
+          timeSlotsContainer.classList.add('show');
         }
-        timeSlotsContainer.classList.add('show');
       }
 
       // ── Event Listeners ───────────────────────────────────────
-      prevMonthBtn.onclick = () => { 
-        console.log('Previous month button clicked');
-        currentDate.setMonth(currentDate.getMonth()-1); 
-        renderCalendar(); 
-      };
-      
-      nextMonthBtn.onclick = () => { 
-        console.log('Next month button clicked');
-        currentDate.setMonth(currentDate.getMonth()+1); 
-        renderCalendar(); 
-      };
-      
-      timezoneSelect.onchange = () => { 
-        userTimezone = timezoneSelect.value;
-        console.log('Timezone changed to:', userTimezone); 
-        showTimeSlots(); 
-      };
+      prevMonthBtn.onclick = () => { currentDate.setMonth(currentDate.getMonth()-1); renderCalendar(); };
+      nextMonthBtn.onclick = () => { currentDate.setMonth(currentDate.getMonth()+1); renderCalendar(); };
+      timezoneSelect.onchange = () => { userTimezone = timezoneSelect.value; console.log('[calendar.html] tz changed =>', userTimezone); showTimeSlots(); };
 
-      // switchViewBtn.onclick = () => {
-      //   isTeacherView = !isTeacherView;
-      //   console.log('View switched to:', isTeacherView ? 'Teacher' : 'Student');
-      //   switchViewBtn.textContent = isTeacherView ? 'Switch to Student View' : 'Switch to Teacher View';
-      //   addTeacherSlotBtn.classList.toggle('hidden', !isTeacherView);
-      //   showTimeSlots();
-      // };
+      // Optional view toggle (uncomment button above first)
+      // const switchViewBtn = document.getElementById('switch-view-btn');
+      // if (switchViewBtn) {
+      //   switchViewBtn.onclick = () => {
+      //     isTeacherView = !isTeacherView;
+      //     switchViewBtn.textContent = isTeacherView ? 'Switch to Student View' : 'Switch to Teacher View';
+      //     addTeacherSlotBtn.classList.toggle('hidden', !isTeacherView);
+      //     showTimeSlots();
+      //   };
+      // }
 
       addTeacherSlotBtn.onclick = () => {
-        console.log('Add teacher slot button clicked');
+        console.log('[calendar.html] show teacher slot modal');
         teacherSlotModal.classList.remove('hidden');
         teacherNameInput.value = '';
         teacherSlotDate.value = '';
@@ -479,9 +453,9 @@
         teacherSlotEnd.value = '';
       };
       
-      teacherSlotCancel.onclick = () => {
-        console.log('Teacher slot modal cancelled');
-        teacherSlotModal.classList.add('hidden');
+      teacherSlotCancel.onclick = () => { 
+        console.log('[calendar.html] close teacher slot modal');
+        teacherSlotModal.classList.add('hidden'); 
       };
 
       teacherSlotSave.onclick = async () => {
@@ -490,39 +464,29 @@
         const start = teacherSlotStart.value;
         const end = teacherSlotEnd.value;
         const tz = teacherSlotTz.value;
-        
-        console.log('Saving teacher slot:', { name, date, start, end, tz });
-        
         if(!name || !date || !start || !end) {
-          console.log('Validation failed - missing fields');
+          console.warn('[calendar.html] teacher slot validation failed');
           return;
         }
-        
         try {
-          const slot = await createTeacherSlot({ 
-            teacher_name: name, 
-            date, 
-            start_time: start, 
-            end_time: end, 
-            timezone: tz 
-          });
-          
-          console.log('Slot created:', slot);
+          console.log('[calendar.html] createTeacherSlot payload:', { teacher_name: name, date, start_time: start, end_time: end, timezone: tz });
+          const slot = await createTeacherSlot({ teacher_name: name, date, start_time: start, end_time: end, timezone: tz });
+          console.log('[calendar.html] slot created:', slot);
           teacherSlots.push(slot);
           teacherSlotModal.classList.add('hidden');
           showTimeSlots();
         } catch(err){
-          console.error('Save failed:', err);
+          console.error('[calendar.html] createTeacherSlot error:', err);
           alert('Save failed: '+err.message);
         }
       };
 
       // ── Init ─────────────────────────────────────────────────
-      console.log('Initializing calendar...');
+      console.log('[calendar.html] init start');
       renderCalendar();
       populateTimezones();
       populateTeacherTz();
-      console.log('Calendar initialized');
+      console.log('[calendar.html] init done');
     });
   </script>
 </body>

@@ -24,7 +24,6 @@
     emailjs.init("AhtLZTPsQ3L2yS1Tw");
   </script>
 
-
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
     html { scroll-behavior: smooth; }
@@ -273,264 +272,242 @@
       </div>
     </div>
   </section>
-<!-- Contact & Scheduler Section -->
-<section id="contact" class="py-16 hero-gradient text-[#F4EDE4]">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- GOLD TITLE above both -->
-    <h2 class="text-3xl font-extrabold text-center mb-8" style="color: #D4AF37;">Pick a Time Slot</h2>
-    <div class="bg-white rounded-xl shadow-lg p-16 flex flex-col md:flex-row gap-8 text-[#3C2A1E]">
-      <!-- Unified Form -->
-      <form id="unifiedForm" class="w-full md:w-1/2 space-y-4 flex flex-col justify-between">
-        <!-- Hidden fields to store calendar info -->
-        <input type="hidden" id="calendar_date" name="calendar_date" required />
-        <input type="hidden" id="calendar_time" name="calendar_time" required />
-        <input type="hidden" id="calendar_timezone" name="calendar_timezone" required />
-        <input type="hidden" id="calendar_link" name="calendar_link" required />
+ <!-- Contact & Scheduler -->
+  <section id="contact" class="py-16 hero-gradient text-[#F4EDE4]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-extrabold text-center mb-8" style="color: #D4AF37;">Pick a Time Slot</h2>
+      <div class="bg-white rounded-xl shadow-lg p-16 flex flex-col md:flex-row gap-8 text-[#3C2A1E]">
+        <!-- Form -->
+        <form id="unifiedForm" class="w-full md:w-1/2 space-y-4 flex flex-col justify-between">
+          <!-- Hidden fields (now includes slot_id) -->
+          <input type="hidden" id="calendar_slot_id" name="calendar_slot_id" required />
+          <input type="hidden" id="calendar_date" name="calendar_date" required />
+          <input type="hidden" id="calendar_time" name="calendar_time" required />
+          <input type="hidden" id="calendar_timezone" name="calendar_timezone" required />
+          <input type="hidden" id="calendar_link" name="calendar_link" required />
 
-        <!-- Registration fields START here -->
-        <input id="reg_name" name="name" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2" type="text" placeholder="Your Name" required />
+          <!-- Visible registration fields -->
+          <input id="reg_name" name="name" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2" type="text" placeholder="Your Name" required />
+          <input id="reg_email" name="email" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2" type="email" placeholder="Your Email" required />
+          <input id="reg_phone" name="phone" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2" type="text" placeholder="A WhatsApp enabled number is preferred" required />
+          <input id="reg_age" name="age" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2" type="number" min="1" max="120" placeholder="Your Age" required />
+          <select id="reg_course" name="course" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2" required>
+            <option value="" disabled selected>Select a Course</option>
+            <option value="acoustic guitar">Acoustic Guitar</option>
+            <option value="electric guitar">Electric Guitar</option>
+            <option value="tabla">Tabla</option>
+            <option value="hindustani vocals">Hindustani Vocals</option>
+            <option value="bollywood vocals">Bollywood Vocals</option>
+            <option value="piano">Piano</option>
+            <option value="kathak">Kathak</option>
+            <option value="music production">Music Production</option>
+          </select>
+          <textarea id="reg_experience" name="previous_experience" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2" rows="3" placeholder="Please tell us about your previous experiences, or what you hope to achieve" required></textarea>
+          <input list="country-list" id="reg_country" name="country" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2" placeholder="Country" required />
+          <datalist id="country-list">
+            <option value="India"><option value="United States"><option value="United Kingdom"><option value="Canada"><option value="Australia"><option value="Singapore"><option value="United Arab Emirates"><option value="Germany"><option value="France"><option value="Other">
+          </datalist>
+        </form>
 
-        <input id="reg_email" name="email" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2" type="email" placeholder="Your Email" required />
+        <!-- Calendar iframe -->
+        <div class="w-full md:w-1/2">
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <iframe id="calendar-iframe" src="calendar.html" class="w-full h-[80vh] md:h-[600px] border-none" title="Class Scheduler"></iframe>
+          </div>
+        </div>
+      </div>
 
-        <input id="reg_phone" name="phone" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2"
-          type="text"
-          placeholder="A WhatsApp enabled number is preferred"
-          required
-          onfocus="this.placeholder='';"
-          onblur="if(this.value===''){this.placeholder='A WhatsApp enabled number is preferred';}" />
+      <!-- Submit -->
+      <div class="flex justify-center mt-8">
+        <button type="submit" form="unifiedForm" id="schedule-btn" class="bg-[#D4AF37] hover:bg-yellow-400 text-black px-8 py-4 rounded-md font-semibold transition text-xl shadow-lg">
+          Schedule Your Class Now!
+        </button>
+      </div>
+    </div>
+  </section>
 
-        <input id="reg_age" name="age" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2" type="number" min="1" max="120" placeholder="Your Age" required />
-
-        <select id="reg_course" name="course" class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2" required>
-          <option value="" disabled selected>Select a Course</option>
-          <option value="acoustic guitar">Acoustic Guitar</option>
-          <option value="electric guitar">Electric Guitar</option>
-          <option value="tabla">Tabla</option>
-          <option value="hindustani vocals">Hindustani Vocals</option>
-          <option value="bollywood vocals">Bollywood Vocals</option>
-          <option value="piano">Piano</option>
-          <option value="kathak">Kathak</option>
-          <option value="music production">Music Production</option>
-        </select>
-
-        <textarea id="reg_experience" name="previous_experience"
-          class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2"
-          rows="3"
-          placeholder="Please tell us about your previous experiences, or what you hope to achieve"
-          onfocus="this.placeholder='';"
-          onblur="if(this.value===''){this.placeholder='Please tell us about your previous experiences, or what you hope to achieve';}"
-          required></textarea>
-
-        <input list="country-list" id="reg_country" name="country"
-          class="w-full p-3 rounded-md border border-[#D4AF37] bg-white mb-2"
-          placeholder="Country" required />
-        <datalist id="country-list">
-          <option value="India">
-          <option value="United States">
-          <option value="United Kingdom">
-          <option value="Canada">
-          <option value="Australia">
-          <option value="Singapore">
-          <option value="United Arab Emirates">
-          <option value="Germany">
-          <option value="France">
-          <option value="Other">
-        </datalist>
-        <!-- Registration fields END here -->
-        <!-- The button has been moved out, so remove it here -->
-      </form>
-      <!-- Calendar Scheduler -->
-      <div class="w-full md:w-1/2">
-        <!-- Remove the old <h2> Pick a Time Slot ... -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-          <iframe
-            id="calendar-iframe"
-            src="calendar.html"
-            class="w-full h-[80vh] md:h-[600px] border-none"
-            title="Class Scheduler">
-          </iframe>
+  <!-- Success Modal -->
+  <div id="success-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
+    <div class="bg-white rounded-lg p-6 max-w-sm w-full mx-4 relative">
+      <button id="close-success-modal" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold" aria-label="Close">&times;</button>
+      <div class="text-center">
+        <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+          <i class="fas fa-check text-green-600"></i>
+        </div>
+        <h3 class="mt-3 text-lg font-medium text-gray-900">
+          Your class has been scheduled!<br>You can add it to your Google Calendar with the button below.
+        </h3>
+        <div class="mt-4">
+          <a id="calendar-link-modal-btn" href="#" target="_blank" class="inline-flex justify-center rounded-md shadow-sm px-4 py-2 bg-[#D4AF37] text-base font-medium text-black hover:bg-yellow-400" style="min-width:220px;">
+            Schedule in your Google Calendar
+          </a>
         </div>
       </div>
     </div>
-    <!-- Button below both, centered -->
-    <div class="flex justify-center mt-8">
-      <button type="submit" form="unifiedForm"
-        id="schedule-btn"
-        class="bg-[#D4AF37] hover:bg-yellow-400 text-black px-8 py-4 rounded-md font-semibold transition text-xl shadow-lg">
-        Schedule Your Class Now!
-      </button>
-    </div>
   </div>
-</section>
 
-<!-- Success Modal -->
-<div id="success-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
-  <div class="bg-white rounded-lg p-6 max-w-sm w-full mx-4 relative">
-    <!-- Cross Button -->
-    <button id="close-success-modal" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold focus:outline-none" aria-label="Close">&times;</button>
-    <div class="text-center">
-      <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-        <i class="fas fa-check text-green-600"></i>
-      </div>
-      <h3 class="mt-3 text-lg font-medium text-gray-900">
-        Your class has been scheduled!<br>
-        You can add it to your Google Calendar with the button below.
-      </h3>
-      <div class="mt-4">
-        <a id="calendar-link-modal-btn"
-           href="#"
-           target="_blank"
-           class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-[#D4AF37] text-base font-medium text-black hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
-           style="min-width:220px;">
-          Schedule in your Google Calendar
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- 2) Your client‐wrapper that sets window.saveRegistration -->
+  <!-- Supabase client libs and our wrappers -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabaseClient.js"></script>
-   <script>
-    console.log("Custom script loaded!");
-    console.log("supabase:", supabase, "saveRegistration:", window.saveRegistration);
 
-    // a) Listen for slot info from the iframe
+  <script>
+    console.log("[index] script loaded");
+
+    // Receive slot info from calendar iframe (slot_id, date, time, timezone)
     window.addEventListener('message', e => {
       if (e.data?.type === 'calendar-info') {
-        console.log('← calendar-info received:', e.data);
-        document.getElementById('calendar_date').value     = e.data.date;
-        document.getElementById('calendar_time').value     = e.data.time;
-        document.getElementById('calendar_timezone').value = e.data.timezone;
+        console.log("[index] ← calendar-info", e.data);
+        const sid = document.getElementById('calendar_slot_id');
+        if (!sid) console.error("[index] calendar_slot_id input missing!");
+        else sid.value = e.data.slot_id || '';
+
+        document.getElementById('calendar_date').value     = e.data.date || '';
+        document.getElementById('calendar_time').value     = e.data.time || '';
+        document.getElementById('calendar_timezone').value = e.data.timezone || '';
       }
     });
 
+    // Submit handler
     unifiedForm.addEventListener('submit', async function(e) {
-  e.preventDefault();
-  console.log("Form submitted!");
+      e.preventDefault();
+      console.log("[index] form submit start");
 
-  // Gather values
-  const name  = document.getElementById('reg_name').value.trim();
-  const email = document.getElementById('reg_email').value.trim();
-  const phone = document.getElementById('reg_phone').value.trim();
-  const age   = document.getElementById('reg_age').value.trim();
-  const course = document.getElementById('reg_course').value;
-  const previous_experience = document.getElementById('reg_experience').value.trim();
-  const country = document.getElementById('reg_country').value.trim();
+      // Gather values
+      const name  = document.getElementById('reg_name').value.trim();
+      const email = document.getElementById('reg_email').value.trim();
+      const phone = document.getElementById('reg_phone').value.trim();
+      const age   = document.getElementById('reg_age').value.trim();
+      const course = document.getElementById('reg_course').value;
+      const previous_experience = document.getElementById('reg_experience').value.trim();
+      const country = document.getElementById('reg_country').value.trim();
 
-  const calendar_date     = document.getElementById('calendar_date').value.trim();
-  const calendar_time     = document.getElementById('calendar_time').value.trim();
-  const calendar_timezone = document.getElementById('calendar_timezone').value.trim();
+      const slot_id           = (document.getElementById('calendar_slot_id')?.value || '').trim();
+      const calendar_date     = document.getElementById('calendar_date').value.trim();
+      const calendar_time     = document.getElementById('calendar_time').value.trim();
+      const calendar_timezone = document.getElementById('calendar_timezone').value.trim();
 
-  // 🔥 Log values for debugging
-  console.log('calendar_time:', calendar_time);
-  console.log('calendar_date:', calendar_date);
-  console.log('calendar_timezone:', calendar_timezone);
+      console.log("[index] collected", { slot_id, calendar_date, calendar_time, calendar_timezone });
 
-  // Missing-fields check
-  const missing = [];
-  if (!name)                missing.push('Name');
-  if (!email)               missing.push('Email');
-  if (!phone)               missing.push('Phone');
-  if (!age)                 missing.push('Age');
-  if (!course)              missing.push('Course');
-  if (!previous_experience) missing.push('Previous experience');
-  if (!country)             missing.push('Country');
-  if (!calendar_date)       missing.push('Selected date');
-  if (!calendar_time)       missing.push('Selected time');
-  if (!calendar_timezone)   missing.push('Timezone');
+      // Validation
+      const missing = [];
+      if (!name) missing.push('Name');
+      if (!email) missing.push('Email');
+      if (!phone) missing.push('Phone');
+      if (!age) missing.push('Age');
+      if (!course) missing.push('Course');
+      if (!previous_experience) missing.push('Previous experience');
+      if (!country) missing.push('Country');
+      if (!calendar_date) missing.push('Selected date');
+      if (!calendar_time) missing.push('Selected time');
+      if (!calendar_timezone) missing.push('Timezone');
+      if (!slot_id) missing.push('Slot id (reselect a time)');
 
-  if (missing.length) {
-    console.warn('Missing fields:', missing);
-    alert(
-      'Please fill out the following fields:\n• ' + missing.join('\n• ')
-    );
-    return;
-  }
+      if (missing.length) {
+        console.warn('[index] missing fields:', missing);
+        alert('Please fill out the following fields:\n• ' + missing.join('\n• '));
+        return;
+      }
 
-  // 🔒 Require time slot selection before parsing
-  if (!calendar_time) {
-    alert("Please select a time slot from the calendar before submitting.");
-    return;
-  }
+      // Parse picked label “hh:mm AM – hh:mm AM”
+      let [startStr, endStr] = calendar_time.split(' – ');
+      if (!endStr) [startStr, endStr] = calendar_time.split(' - ');
+      if (!endStr) {
+        alert("Could not parse the time slot: " + calendar_time);
+        return;
+      }
 
-  // 💥 Split on en dash (–) first, fallback to hyphen (-)
-  let [startStr, endStr] = calendar_time.split(' – ');
-  if (!endStr) {
-    [startStr, endStr] = calendar_time.split(' - ');
-  }
-  if (!endStr) {
-    alert("Could not parse the time slot: " + calendar_time);
-    return;
-  }
+      function to24h(s) {
+        const [time, mod] = s.trim().split(' ');
+        let [h, m] = time.split(':').map(Number);
+        const ampm = (mod || '').toUpperCase();
+        if (ampm === 'PM' && h < 12) h += 12;
+        if (ampm === 'AM' && h === 12) h = 0;
+        return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+      }
+      const start24 = to24h(startStr);
+      const end24   = to24h(endStr);
+      console.log("[index] parsed times", { startStr, endStr, start24, end24 });
 
-  // Build Google Calendar link
-  const parseTime = (date, timeStr) => {
-    const [time, mod] = timeStr.split(' ');
-    let [h, m] = time.split(':').map(Number);
-    if (mod === 'PM' && h < 12) h += 12;
-    if (mod === 'AM' && h === 12) h = 0;
-    const d = new Date(date);
-    d.setHours(h, m, 0, 0);
-    return d.toISOString()
-            .replace(/[-:]/g, '')
-            .replace(/\.\d{3}Z$/, 'Z');
-  };
-  const startUTC = parseTime(calendar_date, startStr);
-  const endUTC   = parseTime(calendar_date, endStr);
-  const title = encodeURIComponent(name + ' - Music Trial');
-  const ctz   = encodeURIComponent(calendar_timezone);
-  const googleCalendarUrl =
-    `https://www.google.com/calendar/render?action=TEMPLATE` +
-    `&text=${title}` +
-    `&dates=${startUTC}/${endUTC}` +
-    `&ctz=${ctz}`;
-
-  document.getElementById('calendar_link').value = googleCalendarUrl;
-
-  // EmailJS
-  const emailData = {
-    name, email, phone, age, course,
-    previous_experience, country,
-    date: calendar_date, time: calendar_time,
+      // 1) Create Meet + insert into booked_slots
+      let meetLink;
+      // 1) (TEMP) insert into booked_slots directly so calendar can see it next time
+try {
+  const bookedRow = await window.insertBookedSlot({
+    slot_id,
+    date: calendar_date,
+    start_time: start24,
+    end_time: end24,
     timezone: calendar_timezone,
-    calendar_link: googleCalendarUrl
-  };
-  console.log("Sending to EmailJS:", emailData);
-  try {
-    await emailjs.send('service_s69ud1n','template_x8ylvsr', emailData);
-    console.log("EmailJS success");
-    document.getElementById('success-modal').classList.remove('hidden');
-    document.getElementById('calendar-link-modal-btn').href = googleCalendarUrl;
-  } catch(err) {
-    console.error("EmailJS error:", err);
-    alert('Error sending email.');
-  }
-
-  // Supabase
-  const supabaseData = {
-    name, email, phone, age: Number(age), course,
-    previous_experience, country,
-    calendar_date, calendar_time, calendar_timezone,
-    calendar_link: googleCalendarUrl
-  };
-  console.log("Sending to Supabase:", supabaseData);
-  try {
-    const inserted = await window.saveRegistration(supabaseData);
-    console.log('✅ Supabase insert success:', inserted);
-  } catch(err) {
-    console.error('❌ Supabase registration error:', err);
-    alert('Error saving registration. Check console.');
-  }
-});
+    student_name: name,     // remove if column doesn't exist
+    student_email: email    // remove if column doesn't exist
+  });
+  console.log("[index] booked_slots row created", bookedRow);
+} catch (err) {
+  console.error("[index] insertBookedSlot error", err);
+  alert('Could not reserve the chosen time (booked_slots insert failed).');
+  return;
+}
 
 
-    // close modal
+      // 2) Optional: create Google Calendar “Add” link for the modal button
+      const toGoogleIso = (date, timeStr) => {
+        const [time, mod] = timeStr.split(' ');
+        let [h, m] = time.split(':').map(Number);
+        const up = (mod || '').toUpperCase();
+        if (up === 'PM' && h < 12) h += 12;
+        if (up === 'AM' && h === 12) h = 0;
+        const d = new Date(date);
+        d.setHours(h, m, 0, 0);
+        return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
+      };
+      const startUTC = toGoogleIso(calendar_date, startStr);
+      const endUTC   = toGoogleIso(calendar_date, endStr);
+      const title = encodeURIComponent(name + ' - Music Trial');
+      const ctz   = encodeURIComponent(calendar_timezone);
+      const googleCalendarUrl =
+        `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startUTC}/${endUTC}&ctz=${ctz}`;
+
+      document.getElementById('calendar_link').value = meetLink || googleCalendarUrl;
+      document.getElementById('success-modal').classList.remove('hidden');
+      document.getElementById('calendar-link-modal-btn').href = googleCalendarUrl;
+
+      // 3) EmailJS
+      const emailData = {
+        name, email, phone, age, course,
+        previous_experience, country,
+        date: calendar_date, time: calendar_time,
+        timezone: calendar_timezone,
+        calendar_link: meetLink || googleCalendarUrl
+      };
+      try {
+        console.log("[index] sending EmailJS", emailData);
+        await emailjs.send('service_s69ud1n','template_x8ylvsr', emailData);
+        console.log("[index] EmailJS success");
+      } catch(err) {
+        console.error("[index] EmailJS error", err);
+      }
+
+      // 4) Save registration
+      const supabaseData = {
+        name, email, phone, age: Number(age), course,
+        previous_experience, country,
+        calendar_date, calendar_time, calendar_timezone,
+        calendar_link: meetLink || googleCalendarUrl
+      };
+      try {
+        console.log("[index] saving registration", supabaseData);
+        const inserted = await window.saveRegistration(supabaseData);
+        console.log("[index] registration saved", inserted);
+      } catch(err) {
+        console.error("[index] saveRegistration error", err);
+        alert('Error saving registration. Check console.');
+      }
+    });
+
     document.getElementById('close-success-modal')
       .addEventListener('click', () =>
         document.getElementById('success-modal').classList.add('hidden')
       );
   </script>
-
 </body>
 </html>
